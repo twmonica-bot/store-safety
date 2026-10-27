@@ -1,0 +1,1639 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>門市安全實務課</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: 門市安全任務（方案 A，已移除地圖）。手機單欄；電腦兩欄（主視覺＋印章｜任務清單）。
+   刻意採單一亮色主題，與《報到手冊》印刷色一致。紅＝緊急・禁止・已完成印章；橘＝下一關・注意；深墨＝一句重點。 */
+:root{
+  --bg:#f7f6f4; --card:#eeebe7; --card2:#e4e0da; --paper:#ffffff;
+  --ink:#231f20; --line:#111111; --gray:#6c6a69; --light:#acaaa9; --rule:#dcdbd9;
+  --red:#e53222; --red-soft:#fbe6e3; --orange:#e8820c; --orange-dk:#b5600a; --orange-soft:#fcefdc;
+  --exit:#1f8a4c; --skin:#ffffff;
+  --f-latin:'Cabin','Noto Sans TC',system-ui,sans-serif;
+  --f-body:'Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+img{max-width:100%}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.75;margin:0;-webkit-text-size-adjust:100%}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:6px}
+h1,h2,h3{margin:0;line-height:1.3;text-wrap:balance}
+p{margin:0}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.en{font-family:var(--f-latin);letter-spacing:.3em;font-size:11px;font-weight:500;text-transform:uppercase}
+.num{font-family:var(--f-latin);font-weight:700}
+
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--bg);border-bottom:1px solid var(--rule)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px}
+.logo{font-family:var(--f-latin);font-weight:500;font-size:21px;letter-spacing:.18em;color:var(--gray)}
+.top small{font-size:12px;color:var(--gray);letter-spacing:.1em;white-space:nowrap}
+.back{font-weight:700;font-size:15px;display:flex;align-items:center;min-height:44px}
+
+/* ---------- home ---------- */
+.home-top{display:grid;grid-template-columns:1fr;gap:14px;padding-block:16px 8px}
+.panel{display:flex;flex-direction:column;gap:14px;min-width:0}
+.hero{background:var(--red);color:#fff;border:2px solid var(--line);border-radius:14px;padding:22px 18px;display:flex;flex-direction:column;gap:8px}
+.hero h1{font-size:clamp(30px,8vw,40px);font-weight:900;letter-spacing:.05em}
+.hero .lead{font-size:16px;font-weight:500}
+.hero .meta{font-size:13px;opacity:.92}
+.cast{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+.cast figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:0}
+.cast svg{width:54px;height:54px}
+.cast figcaption{font-size:11px}
+
+.progress{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.progress-head{display:flex;justify-content:space-between;align-items:baseline}
+.progress-head b{font-size:16px}
+.progress-head .num{font-size:24px}
+.progress-head .num small{font-size:14px;color:var(--gray);font-weight:500}
+.stamps{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;list-style:none;margin:0;padding:0}
+.stamps li{aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-family:var(--f-latin);font-weight:700;font-size:13px;background:var(--card);border:2px solid var(--rule);color:var(--gray)}
+.stamps li.done{background:var(--red);border-color:var(--line);color:#fff}
+.stamps li.next{background:var(--paper);border:2px dashed var(--orange);color:var(--orange-dk)}
+.progress p{font-size:12px;color:var(--gray)}
+.reset{align-self:flex-start;background:none;border:0;padding:0;font-size:12px;color:var(--gray);text-decoration:underline;min-height:24px}
+
+.sos-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--ink);color:#fff;border-radius:14px;padding:14px 16px;min-height:56px}
+.sos-btn b{font-size:17px;font-weight:900}
+.sos-btn .num{font-size:19px;color:#ff8f80}
+
+.mapbox{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.mapbox-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.mapbox-head h2{font-size:20px;font-weight:900}
+.mapbox-head span{font-size:12px;color:var(--gray)}
+.map{width:100%;height:auto;display:block;max-width:560px;margin:0 auto}
+.map .lbl{font-family:var(--f-body);font-size:12px;font-weight:700;fill:var(--gray)}
+.pin{cursor:pointer}
+.pin .halo{fill:none;stroke:var(--orange);stroke-width:3;stroke-dasharray:5 4;display:none}
+.pin .dot{fill:#fff;stroke:var(--line);stroke-width:2.5}
+.pin text{font-family:var(--f-latin);font-size:13px;font-weight:700;fill:var(--ink);text-anchor:middle}
+.pin .chk{display:none;stroke:#fff;stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.pin.done .dot{fill:var(--red);stroke-width:3}
+.pin.done text{display:none}
+.pin.done .chk{display:inline}
+.pin.next .dot{fill:var(--orange);stroke-width:3}
+.pin.next text{fill:#fff}
+.pin.next .halo{display:inline}
+.pin:hover .dot,.pin:focus-visible .dot{stroke-width:4}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--gray)}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--line);display:inline-block}
+
+.list{display:flex;flex-direction:column;min-width:0}
+.list h2{font-size:20px;font-weight:900;border-bottom:2px solid var(--line);padding-bottom:6px;margin-bottom:4px}
+.list ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.list a{display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:8px;padding:10px 8px;border-bottom:1px solid var(--rule);min-height:52px;border-radius:8px}
+.list a:hover{background:var(--card)}
+.list .num{color:var(--gray)}
+.list b{font-size:15px;line-height:1.45}
+.list .st{font-size:12px;color:var(--gray);white-space:nowrap}
+.list li.done .num,.list li.done .st{color:var(--red);font-weight:700}
+.list li.next a{background:var(--orange-soft);border-bottom-color:transparent}
+.list li.next .num{color:var(--orange-dk)}
+.list li.next .st{color:var(--ink);font-weight:700}
+
+section.blk{padding-block:28px 6px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:2px solid var(--line);padding-bottom:6px;margin-bottom:16px}
+.sec-head h2{font-size:21px;font-weight:900}
+.sec-head .en{color:var(--gray);font-size:10px;white-space:nowrap}
+
+.intro{display:grid;gap:4px;font-size:16px;max-width:42em}
+.rules{display:grid;grid-template-columns:1fr;gap:10px;list-style:none;padding:0;margin:0}
+.rules li{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:16px;display:flex;gap:14px;align-items:center}
+.rules .num{font-size:30px;line-height:1}
+.rules span{font-size:18px;font-weight:700;line-height:1.5}
+
+.sos-box{background:var(--red-soft);border:2px solid var(--red);border-radius:14px;padding:18px 16px;display:grid;gap:14px}
+.sos-key{font-size:20px;font-weight:900;color:var(--red)}
+.calls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.call{background:var(--paper);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column}
+.call .num{font-size:38px;line-height:1.15;color:var(--red)}
+.call span{font-size:14px}
+.chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.chip{background:var(--paper);border:1.5px solid #f0b4ab;border-radius:10px;padding:10px 12px;font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;min-height:50px}
+.chip svg{flex:none;width:22px;height:22px;stroke:var(--red);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sos-note{font-size:14px;color:var(--ink)}
+
+.steps{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr;gap:0}
+.steps li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px dashed var(--rule)}
+.steps li:last-child{border-bottom:0}
+.steps .n{font-family:var(--f-latin);font-weight:700;font-size:13px;letter-spacing:.12em;background:var(--ink);color:#fff;border-radius:3px;text-align:center;padding:3px 0;align-self:start}
+.steps b{display:block;font-size:16px}
+.steps span{font-size:14px;color:var(--gray)}
+.mind{margin-top:14px;background:var(--orange-soft);border-left:5px solid var(--orange);padding:12px 14px;border-radius:0 10px 10px 0;display:grid;gap:2px}
+.mind .lab{color:var(--orange-dk);font-weight:900;font-size:13px;letter-spacing:.1em}
+.mind p{font-size:15px}
+
+.docs{display:grid;gap:10px}
+.doc{background:var(--card);border-radius:12px;padding:14px 16px;display:grid;gap:2px}
+.doc .code{font-family:var(--f-latin);font-size:12px;letter-spacing:.15em;color:var(--gray)}
+.doc b{font-size:16px}
+.doc p{font-size:14px;color:var(--gray)}
+.app{display:flex;gap:12px;align-items:center;background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:12px 16px}
+.app svg{flex:none;width:28px;height:28px;stroke:var(--ink);fill:none;stroke-width:1.8}
+.app p{font-size:15px}
+
+footer{border-top:1px solid var(--rule);margin-top:34px;padding-block:20px 32px;color:var(--gray);font-size:13px}
+footer .wrap{display:grid;gap:6px}
+footer .ver{display:flex;flex-wrap:wrap;gap:4px 16px;font-family:var(--f-latin);letter-spacing:.06em}
+
+/* ---------- mission ---------- */
+.m-head{background:var(--ink);color:#fff}
+.m-head .wrap{display:flex;gap:14px;align-items:center;padding-block:20px}
+.m-badge{flex:none;width:62px;height:62px;border-radius:50%;background:var(--orange);border:3px solid #fff;display:grid;place-items:center;font-size:22px}
+.m-head .where{font-size:12px;color:#cfcac4;letter-spacing:.08em}
+.m-head h1{font-size:clamp(22px,5.6vw,30px);font-weight:900}
+.m-head .meta{font-size:12px;color:#cfcac4}
+.m-body{max-width:720px;display:flex;flex-direction:column;gap:22px;padding-block:18px 10px}
+.talk{display:flex;flex-direction:column;gap:12px}
+.say{display:flex;gap:10px;align-items:flex-end}
+.say.me .bubble{background:var(--paper);border:2px solid var(--line);border-radius:16px 16px 16px 3px;padding:10px 14px;font-size:16px;font-weight:500}
+.say.mentor{flex-direction:row-reverse}
+.say.mentor .bubble{background:var(--ink);color:#fff;border-radius:16px 16px 3px 16px;padding:12px 14px;display:flex;flex-direction:column}
+.say.mentor small{font-size:11px;color:#cfcac4}
+.say.mentor strong{font-size:18px;font-weight:900;line-height:1.45}
+.say svg{flex:none;width:52px;height:52px}
+.stage{display:flex;flex-direction:column;gap:10px}
+.stage-head{display:flex;align-items:center;gap:8px;border-bottom:2px solid var(--line);padding-bottom:6px}
+.stage-head .tag{background:var(--line);color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:3px;white-space:nowrap}
+.stage-head h2{font-size:19px;font-weight:900}
+.ticks{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.ticks li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;font-size:15px;align-items:start}
+.ticks li::before{content:"";width:18px;height:18px;margin-top:4px;border-radius:50%;border:2px solid var(--line);background:var(--card)}
+.stage p{font-size:15px}
+.law{font-size:14px;color:var(--gray);background:var(--card);border-radius:10px;padding:12px 14px}
+.law b{color:var(--ink)}
+.challenge{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.challenge .hd{display:flex;align-items:center;gap:8px}
+.challenge .tag{background:var(--orange);color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:3px}
+.challenge label{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.challenge input{width:20px;height:20px;margin-top:3px;accent-color:var(--red);flex:none}
+.finish{display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:4px}
+.seal{width:104px;height:104px;border-radius:50%;border:3px dashed var(--light);display:grid;place-items:center;transform:rotate(-8deg);color:var(--light);font-weight:900;font-size:15px;text-align:center;line-height:1.25;transition:all .3s}
+.seal.on{border:4px solid var(--red);color:var(--red);transform:rotate(-12deg) scale(1.04)}
+.stamp-btn{width:100%;background:var(--red);color:#fff;border:2px solid var(--line);border-radius:12px;padding:14px;font-weight:900;font-size:17px;min-height:54px}
+.stamp-btn[disabled]{background:var(--card2);color:var(--gray);border-color:var(--rule);cursor:default}
+.finish small{font-size:12px;color:var(--gray);text-align:center}
+.flow{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.flow li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;align-items:center;background:var(--paper);border:1.5px solid var(--rule);border-radius:10px;padding:10px 12px;font-size:15px}
+.flow li .num{width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:13px}
+.flow li.last{border-color:var(--line)}
+.hunt{display:flex;flex-direction:column;gap:10px}
+.hunt-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:14px}
+.hunt-bar .num{font-size:18px}
+.scene{position:relative;border:2px solid var(--line);border-radius:12px;overflow:hidden;background:#eeebe7}
+.scene svg{display:block;width:100%;height:auto}
+.hz{position:absolute;transform:translate(-50%,-50%);background:transparent;border:0;border-radius:14px;padding:0;min-width:44px;min-height:44px}
+.hz:focus-visible{outline:3px solid var(--orange)}
+.hz .mk{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:var(--red);border:3px solid var(--line);color:#fff;font-family:var(--f-latin);font-weight:700;font-size:15px;place-items:center}
+.hz.found{border:3px solid var(--red);background:rgba(229,50,34,.08)}
+.hz.found .mk{display:grid}
+.scene.hint .hz:not(.found){border:3px dashed var(--orange);background:rgba(232,130,12,.12)}
+.hint-btn{align-self:flex-start;background:none;border:0;padding:0;font-size:13px;color:var(--gray);text-decoration:underline;min-height:32px}
+.cards{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.cards li{border:1.5px dashed var(--light);border-radius:10px;padding:10px 12px;display:grid;grid-template-columns:30px minmax(0,1fr);gap:10px;align-items:start;color:var(--gray);font-size:14px}
+.cards li .num{width:26px;height:26px;border-radius:50%;background:var(--card2);display:grid;place-items:center;font-size:13px;color:var(--gray)}
+.cards li .tx{display:none}
+.cards li.found{border:2px solid var(--line);background:var(--paper);color:var(--ink)}
+.cards li.found .num{background:var(--red);color:#fff}
+.cards li.found .tx{display:block}
+.cards li.found .lock{display:none}
+.cards b{display:block;font-size:15px}
+.mind2{background:var(--orange-soft);border-left:5px solid var(--orange);padding:12px 14px;border-radius:0 10px 10px 0;display:grid;gap:2px}
+.mind2 .lab{color:var(--orange-dk);font-weight:900;font-size:13px;letter-spacing:.1em}
+.mind2 p{font-size:15px}
+@media (min-width:980px){.cards{grid-template-columns:1fr 1fr}}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.tab{background:var(--paper);border:2px solid var(--line);border-radius:10px;padding:8px 4px;display:flex;flex-direction:column;align-items:center;gap:0;min-height:56px;color:var(--ink)}
+.tab b{font-size:15px}
+.tab small{font-size:12px;color:var(--gray);font-family:var(--f-latin)}
+.tab[aria-selected="true"]{background:var(--ink);color:#fff}
+.tab[aria-selected="true"] small{color:#cfcac4}
+.tab.ok small{color:var(--red);font-weight:700}
+.tab.ok[aria-selected="true"] small{color:#ff8f80}
+.shift{display:flex;flex-direction:column;gap:10px}
+.shift-art{border:2px solid var(--line);border-radius:12px;overflow:hidden}
+.shift-art svg{display:block;width:100%;height:auto}
+.shift-title{font-size:17px;font-weight:900}
+.cklist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.ck{width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;background:var(--paper);border:1.5px solid var(--rule);border-radius:10px;padding:10px 12px;text-align:left;font-size:15px;color:var(--ink);min-height:52px}
+.ck .go{font-size:13px;font-weight:700;border:2px solid var(--line);border-radius:999px;padding:2px 10px;white-space:nowrap}
+.ck.ok{border-color:var(--line)}
+.ck.ok .go{background:var(--red);border-color:var(--red);color:#fff}
+.report{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px;display:grid;gap:10px}
+.report .lab{color:var(--orange-dk);font-weight:900;font-size:13px;letter-spacing:.1em}
+.report p{font-size:15px}
+.r3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;list-style:none;margin:0;padding:0}
+.r3 li{background:var(--paper);border-radius:10px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;font-weight:700;font-size:14px;line-height:1.35}
+.r3 svg{width:28px;height:28px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.r3 .num{font-size:12px;color:var(--orange-dk)}
+.tools{display:grid;grid-template-columns:1fr;gap:10px}
+.tool{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.tool-n{font-size:16px}
+.dd{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.dd li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:6px;font-size:15px;align-items:start}
+.dd li::before{width:20px;height:20px;margin-top:3px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:900;color:#fff}
+.dd.do li::before{content:"✓";background:var(--ink)}
+.dd.dont li{color:var(--red);font-weight:700}
+.dd.dont li::before{content:"✕";background:var(--red)}
+.dd.dont{border-top:1px dashed var(--rule);padding-top:6px}
+@media (min-width:980px){.tools{grid-template-columns:1fr 1fr}}
+.scns{display:grid;grid-template-columns:1fr;gap:8px}
+.scn{background:var(--paper);border:2px solid var(--line);border-radius:12px;overflow:hidden}
+.scn summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px 12px;min-height:56px}
+.scn summary::-webkit-details-marker{display:none}
+.scn summary .ic{width:40px;height:40px;border-radius:10px;background:var(--red-soft);display:grid;place-items:center}
+.scn summary .ic svg{width:24px;height:24px;stroke:var(--red);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.scn summary b{font-size:17px}
+.scn summary .st{font-size:12px;color:var(--gray);white-space:nowrap}
+.scn.seen summary .st{color:var(--red);font-weight:700}
+.scn[open] summary{background:var(--ink);color:#fff}
+.scn[open] summary .st{color:#ff8f80}
+.scn .body{padding:12px 14px 14px;display:grid;gap:6px}
+.scn .body ol{margin:0;padding-left:1.3em;display:grid;gap:6px;font-size:15px}
+.scn .body .no{color:var(--red);font-weight:700}
+.quiz{display:grid;gap:12px}
+.q{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:8px}
+.q .qn{font-family:var(--f-latin);font-size:11px;letter-spacing:.2em;color:var(--gray)}
+.q b{font-size:16px}
+.q .opts{display:grid;gap:6px}
+.q .opt{text-align:left;background:var(--bg);border:1.5px solid var(--rule);border-radius:10px;padding:10px 12px;font-size:15px;min-height:48px;color:var(--ink)}
+.q .opt.right{background:var(--ink);color:#fff;border-color:var(--ink)}
+.q .opt.wrong{border-color:var(--red);color:var(--red)}
+.q .fb{font-size:14px;background:var(--card);border-radius:8px;padding:10px 12px}
+.q .fb b{font-size:14px}
+.callcard{background:var(--ink);color:#fff;border-radius:14px;padding:16px;display:grid;gap:10px}
+.callcard .lab{font-family:var(--f-latin);font-size:11px;letter-spacing:.25em;color:#ff8f80}
+.callcard p{font-size:17px;line-height:2.1}
+.callcard u{text-decoration:none;display:inline-block;min-width:3.2em;border-bottom:2px solid #ff8f80;text-align:center;color:#ff8f80;font-size:13px;line-height:1.4;margin:0 2px}
+.callcard ol{margin:0;padding-left:1.3em;font-size:13px;color:#cfcac4;display:grid;gap:2px}
+@media (min-width:980px){.scns{grid-template-columns:1fr 1fr}}
+.spots{display:grid;grid-template-columns:1fr;gap:8px}
+.spotcard{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:12px;display:grid;grid-template-columns:48px minmax(0,1fr);gap:4px 12px;align-items:start}
+.spotcard .si{grid-row:1 / span 3;width:48px;height:48px;border-radius:10px;background:var(--card);display:grid;place-items:center}
+.spotcard .si svg{width:34px;height:34px}
+.spotcard b{font-size:16px}
+.spotcard p{font-size:14px;color:var(--ink)}
+.spotcard .ck{grid-column:2;min-height:44px;padding:6px 10px;margin-top:4px}
+.spotcard .ck > span:first-child{font-size:14px;font-weight:700}
+.spotcard:has(.ck.ok){border-color:var(--red)}
+.phone-tip{background:var(--ink);color:#fff;border-radius:12px;padding:12px 14px;font-weight:700;font-size:15px}
+.cond{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:8px}
+.cond .hd{font-size:16px;font-weight:900}
+.cond ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px}
+.cond li{background:var(--card);border-radius:8px;padding:8px 10px;font-size:15px;font-weight:700;display:flex;gap:6px;align-items:center}
+.cond li::before{content:"✓";width:20px;height:20px;border-radius:50%;background:var(--ink);color:#fff;font-size:12px;display:grid;place-items:center;flex:none}
+.cond .no{color:var(--red);font-weight:900}
+.pass{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;list-style:none;margin:0;padding:0}
+.pass li{background:var(--paper);border:2px solid var(--line);border-radius:10px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:900;font-size:18px}
+.pass svg{width:30px;height:30px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pass small{font-size:11px;color:var(--gray);font-weight:500;text-align:center;line-height:1.3}
+.warn{background:var(--red-soft);border:2px solid var(--red);border-radius:12px;padding:12px 14px;font-size:14px}
+.warn b{color:var(--red)}
+@media (min-width:980px){.spots{grid-template-columns:1fr 1fr}}
+.say-try{display:flex;gap:10px;align-items:flex-end}
+.say-try svg{flex:none;width:48px;height:48px}
+.say-try .bubble{background:var(--orange-soft);border:2px solid var(--orange);border-radius:16px 16px 16px 3px;padding:10px 14px;display:flex;flex-direction:column}
+.say-try small{font-size:11px;color:var(--orange-dk);font-weight:700}
+.say-try strong{font-size:18px}
+.contact{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px}
+.contact .row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;border-bottom:1px dashed var(--rule);padding-bottom:10px}
+.contact .row:last-of-type{border-bottom:0;padding-bottom:0}
+.contact small{display:block;font-size:12px;color:var(--gray)}
+.contact .val{font-family:var(--f-latin);font-size:18px;font-weight:700;user-select:all;word-break:break-all}
+.copy{border:2px solid var(--line);background:var(--paper);border-radius:999px;padding:4px 14px;font-size:13px;font-weight:700;min-height:40px;color:var(--ink)}
+.copy.done{background:var(--ink);color:#fff}
+.contact p{font-size:14px;color:var(--gray)}
+.sig{display:grid;grid-template-columns:1fr;gap:8px}
+.sigcard{background:var(--paper);border:1.5px solid var(--rule);border-radius:12px;padding:12px 14px;display:grid;gap:4px}
+.sigcard b{font-size:16px}
+.sigcard b::after{content:" →";color:var(--orange-dk)}
+.sigcard p{font-size:14px}
+.plans{background:var(--card);border-radius:12px;padding:12px 14px;display:grid;gap:6px;font-size:14px}
+.plans ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.plans li{background:var(--paper);border-radius:999px;padding:2px 10px;font-size:13px;font-weight:700}
+.soft{font-size:13px;color:var(--gray)}
+@media (min-width:980px){.sig{grid-template-columns:1fr 1fr}}
+.done-hero{background:var(--red);color:#fff;border-bottom:2px solid var(--line)}
+.done-hero .wrap{padding-block:30px;display:grid;gap:10px;justify-items:start}
+.done-hero h1{font-size:clamp(26px,7vw,40px);font-weight:900}
+.done-hero p{font-size:16px}
+.done-stamps{display:flex;gap:6px;flex-wrap:wrap}
+.done-stamps span{width:40px;height:40px;border-radius:50%;background:#fff;color:var(--red);border:2px solid var(--line);display:grid;place-items:center;font-family:var(--f-latin);font-weight:700;font-size:13px}
+.home-done{background:var(--red);color:#fff;border:2px solid var(--line);border-radius:10px;padding:10px 12px;font-weight:900;text-align:center;min-height:44px}
+/* ---------- 動畫短片 ---------- */
+.clip{border:2px solid var(--line);border-radius:14px;overflow:hidden;background:var(--paper)}
+.clip-stage{position:relative;background:#eeebe7}
+.clip-stage svg.anim{display:block;width:100%;height:auto}
+.anim .sc{opacity:0;transition:opacity .45s}
+.anim .sc.on{opacity:1}
+.anim.paused *{animation-play-state:paused!important}
+.cap{display:flex;flex-direction:column;gap:2px;padding:12px 14px;background:var(--ink);color:#fff;min-height:108px}
+.cap-no{font-family:var(--f-latin);font-size:11px;letter-spacing:.25em;color:#ff8f80}
+.cap b{font-size:17px}
+.cap span.d{font-size:14px;color:#e8e4df}
+.bigplay{position:absolute;left:16px;bottom:16px;width:60px;height:60px;border-radius:50%;background:var(--ink);border:3px solid #fff;display:grid;place-items:center}
+.bigplay svg{width:28px;height:28px}
+.clip-ctl{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid var(--rule)}
+.clip-ctl button{width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:var(--paper);display:grid;place-items:center;flex:none}
+.clip-ctl button svg{width:18px;height:18px}
+.bar{flex:1;height:8px;border-radius:4px;background:var(--card2);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--red)}
+.clip-ctl .tm{font-family:var(--f-latin);font-size:13px;color:var(--gray);min-width:76px;text-align:right;font-variant-numeric:tabular-nums}
+.chapters{display:flex;gap:6px;flex-wrap:wrap;padding:0 12px 12px}
+.chapters button{border:1.5px solid var(--rule);background:var(--paper);border-radius:999px;padding:4px 12px;font-size:13px;min-height:36px;color:var(--ink)}
+.chapters button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.clip-note{font-size:12px;color:var(--gray)}
+@keyframes popIn{0%{opacity:0;transform:scale(.6)}100%{opacity:1;transform:scale(1)}}
+@keyframes lateIn{0%,45%{opacity:0;transform:translateY(8px)}60%,100%{opacity:1;transform:none}}
+@keyframes squatDown{0%{transform:translateY(-26px)}35%,100%{transform:none}}
+@keyframes boxIn{0%,15%{transform:translateX(34px)}55%,100%{transform:none}}
+@keyframes riseUp{0%,10%{transform:translateY(38px)}55%,100%{transform:none}}
+@keyframes feetTurn{0%,20%{transform:rotate(0)}60%,100%{transform:rotate(70deg)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+.sc.run .a-pop{transform-box:fill-box;transform-origin:center;animation:popIn .5s .6s both}
+.sc.run .a-late{animation:lateIn 7s both}
+.sc.run .a-squat{animation:squatDown 7s both}
+.sc.run .a-box{animation:boxIn 7s both}
+.sc.run .a-rise{animation:riseUp 7s both}
+.sc.run .a-feet{transform-box:fill-box;transform-origin:center;animation:feetTurn 7s both}
+.sc.run .a-blink{animation:blink 1.2s infinite}
+.draft{background:var(--orange-soft);border:2px dashed var(--orange);border-radius:14px;padding:18px;display:grid;gap:6px}
+.draft b{color:var(--orange-dk)}
+
+@media (min-width:980px){
+  .home-top{grid-template-columns:380px minmax(0,1fr);gap:28px;align-items:start;padding-top:24px}
+  .rules{grid-template-columns:repeat(3,1fr)}
+  .rules li{flex-direction:column;align-items:flex-start;gap:8px}
+  .sos-box{grid-template-columns:1fr 1.4fr;align-items:start;padding:24px}
+  .sos-left{display:grid;gap:14px}
+  .chips{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .steps{grid-template-columns:repeat(4,1fr);gap:16px}
+  .steps li{grid-template-columns:1fr;border-bottom:0;border-top:2px solid var(--line);padding-top:12px}
+  .steps .n{justify-self:start;padding:3px 10px}
+  .docs{grid-template-columns:1fr 1fr}
+  .app{grid-column:1 / -1}
+}
+@media (min-width:640px) and (max-width:979px){
+  .home-top{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+
+<!-- 人物頭像（原創粗線風格） -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="av-you" viewBox="0 0 64 64"><path d="M12 40 C10 20 21 12 32 12 C44 12 54 20 52 40 Z" fill="#111"/><circle cx="32" cy="37" r="17" fill="#fff" stroke="#111" stroke-width="3"/><path d="M15 33 C18 24 26 21 33 21 C40 21 46 25 49 33 C42 29 36 27 30 27 C24 27 19 29 15 33Z" fill="#111"/><circle cx="26" cy="38" r="2.2" fill="#111"/><circle cx="38" cy="38" r="2.2" fill="#111"/><path d="M27 45 Q32 49 37 45" stroke="#111" stroke-width="2.6" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="av-you-q" viewBox="0 0 64 64"><path d="M12 40 C10 20 21 12 32 12 C44 12 54 20 52 40 Z" fill="#111"/><circle cx="32" cy="37" r="17" fill="#fff" stroke="#111" stroke-width="3"/><path d="M15 33 C18 24 26 21 33 21 C40 21 46 25 49 33 C42 29 36 27 30 27 C24 27 19 29 15 33Z" fill="#111"/><circle cx="26" cy="38" r="2.2" fill="#111"/><circle cx="38" cy="38" r="2.2" fill="#111"/><path d="M28 46 H36" stroke="#111" stroke-width="2.6" stroke-linecap="round"/></symbol>
+    <symbol id="av-mentor" viewBox="0 0 64 64"><circle cx="32" cy="36" r="18" fill="#fff" stroke="#111" stroke-width="3"/><path d="M14 33 C13 19 22 13 32 13 C43 13 51 19 50 33 C46 26 40 23 32 23 C24 23 18 26 14 33Z" fill="#111"/><rect x="20" y="33" width="10" height="8" rx="2" fill="#fff" stroke="#111" stroke-width="2.4"/><rect x="34" y="33" width="10" height="8" rx="2" fill="#fff" stroke="#111" stroke-width="2.4"/><path d="M30 36 H34" stroke="#111" stroke-width="2.4"/><circle cx="25" cy="37" r="1.6" fill="#111"/><circle cx="39" cy="37" r="1.6" fill="#111"/><path d="M27 46 Q32 50 37 46" stroke="#111" stroke-width="2.6" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="av-manager" viewBox="0 0 64 64"><circle cx="32" cy="11" r="6.5" fill="#111"/><circle cx="32" cy="37" r="17" fill="#fff" stroke="#111" stroke-width="3"/><path d="M15 35 C14 22 22 16 32 16 C42 16 50 22 49 35 C45 28 40 24 32 24 C27 27 20 29 15 35Z" fill="#111"/><circle cx="26" cy="39" r="2.2" fill="#111"/><circle cx="38" cy="39" r="2.2" fill="#111"/><path d="M27 46 Q32 50 37 46" stroke="#111" stroke-width="2.6" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="av-floor" viewBox="0 0 64 64"><circle cx="32" cy="38" r="17" fill="#fff" stroke="#111" stroke-width="3"/><path d="M14 30 Q32 8 50 30 Z" fill="#111"/><path d="M12 30 H52" stroke="#111" stroke-width="4" stroke-linecap="round"/><circle cx="32" cy="22" r="3" fill="#fff"/><circle cx="26" cy="39" r="2.2" fill="#111"/><circle cx="38" cy="39" r="2.2" fill="#111"/><path d="M27 46 Q32 50 37 46" stroke="#111" stroke-width="2.6" fill="none" stroke-linecap="round"/></symbol>
+    <symbol id="av-fire" viewBox="0 0 64 64"><circle cx="32" cy="39" r="16" fill="#fff" stroke="#111" stroke-width="3"/><path d="M13 31 Q32 4 51 31 Z" fill="#fff" stroke="#111" stroke-width="3" stroke-linejoin="round"/><path d="M32 11 V31" stroke="#111" stroke-width="3"/><path d="M9 31 H55" stroke="#111" stroke-width="4" stroke-linecap="round"/><circle cx="26" cy="40" r="2.2" fill="#111"/><circle cx="38" cy="40" r="2.2" fill="#111"/><path d="M27 47 Q32 51 37 47" stroke="#111" stroke-width="2.6" fill="none" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#home" aria-label="GIVEN 回首頁">GIVEN</a>
+    <small id="topSub">新進同仁｜門市安全實務課</small>
+    <a class="back" id="backBtn" href="#home" hidden>← 回首頁</a>
+  </div>
+</header>
+
+<!-- ================= 首頁 ================= -->
+<main id="view-home">
+  <div class="wrap home-top">
+    <div class="panel">
+      <div class="hero">
+        <span class="en">Store Safety Missions</span>
+        <h1>門市安全實務課</h1>
+        <p class="lead">走完 7 個任務，安全上場。</p>
+        <p class="meta">約 180 分鐘・報到一週內完成</p>
+        <div class="cast">
+          <figure><svg aria-hidden="true"><use href="#av-you"/></svg><figcaption>你</figcaption></figure>
+          <figure><svg aria-hidden="true"><use href="#av-mentor"/></svg><figcaption>指導人</figcaption></figure>
+          <figure><svg aria-hidden="true"><use href="#av-manager"/></svg><figcaption>店長</figcaption></figure>
+          <figure><svg aria-hidden="true"><use href="#av-floor"/></svg><figcaption>樓管</figcaption></figure>
+          <figure><svg aria-hidden="true"><use href="#av-fire"/></svg><figcaption>消防員</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="progress">
+        <div class="progress-head"><b>我的印章</b><span class="num"><span id="doneCount">0</span><small> / 7</small></span></div>
+        <ol class="stamps" id="stamps">
+          <li data-id="01">01</li><li data-id="02">02</li><li data-id="03">03</li><li data-id="04">04</li><li data-id="05">05</li><li data-id="06">06</li><li data-id="07">07</li>
+        </ol>
+        <p>印章只存在這支手機的瀏覽器，正式紀錄以 A-1《新進人員報到資料確認表》簽名為準。</p>
+        <a class="home-done" id="doneLink" href="#done" hidden>集滿 7 枚印章，查看結業畫面</a>
+        <button class="reset" id="resetBtn" type="button">清除印章，重新開始</button>
+      </div>
+
+      <a class="sos-btn" href="#sos"><b>緊急時，先看這裡</b><span class="num">119・110 →</span></a>
+    </div>
+
+    <nav class="list" aria-label="七個任務">
+      <h2>七個任務</h2>
+      <ol id="missionList">
+        <li data-id="01"><a href="#m01"><span class="num">01</span><b>安全上場，你有公司的支持</b><span class="st">20 分</span></a></li>
+        <li data-id="02"><a href="#m02"><span class="num">02</span><b>門市裡，哪些地方要多看一眼？</b><span class="st">20 分</span></a></li>
+        <li data-id="03"><a href="#m03"><span class="num">03</span><b>開店、營業、打烊，順手確認安全</b><span class="st">30 分</span></a></li>
+        <li data-id="04"><a href="#m04"><span class="num">04</span><b>補貨理貨，先照顧好自己</b><span class="st">30 分</span></a></li>
+        <li data-id="05"><a href="#m05"><span class="num">05</span><b>突然出事，第一步怎麼做？</b><span class="st">30 分</span></a></li>
+        <li data-id="06"><a href="#m06"><span class="num">06</span><b>找到設備，也找到安全的路</b><span class="st">30 分</span></a></li>
+        <li data-id="07"><a href="#m07"><span class="num">07</span><b>遇到不當對待、身體不舒服，別硬撐</b><span class="st">20 分</span></a></li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="wrap blk" aria-labelledby="h-rules">
+    <div class="sec-head"><h2 id="h-rules">出發前，先記住這三句</h2><span class="en">Three Rules</span></div>
+    <div class="intro" style="margin-bottom:16px">
+      <p>第一次上場，不用把所有事情一次記住。</p>
+      <p>先認識門市裡的危險，學會安全的做法；不確定時，先停下來，再問。</p>
+    </div>
+    <ol class="rules">
+      <li><span class="num">1</span><span>先想再做。</span></li>
+      <li><span class="num">2</span><span>看到危險，先保護自己、提醒他人並回報。</span></li>
+      <li><span class="num">3</span><span>不會就問，不勉強操作。</span></li>
+    </ol>
+  </section>
+
+  <section class="wrap blk" id="sos" aria-labelledby="h-sos">
+    <div class="sec-head"><h2 id="h-sos">緊急時，先看這裡</h2><span class="en">Emergency</span></div>
+    <div class="sos-box">
+      <div class="sos-left">
+        <p class="sos-key">先保護人，再處理物品。</p>
+        <div class="calls">
+          <div class="call"><span class="num">119</span><span>火災・有人受傷</span></div>
+          <div class="call"><span class="num">110</span><span>竊盜・人身威脅</span></div>
+        </div>
+        <p class="sos-note">不要等主管回覆才求援。有其他人在場時，分工打電話與通知樓管。</p>
+      </div>
+      <div class="chips">
+        <a class="chip" href="#m05fire"><svg viewBox="0 0 24 24"><path d="M12 3c1 4 6 6 6 11a6 6 0 0 1-12 0c0-3 2-4 2-7 2 1 3 3 3 5 1-2 1-6 1-9z"/></svg>火災</a>
+        <a class="chip" href="#m05quake"><svg viewBox="0 0 24 24"><path d="M3 12h3l2-5 3 10 3-8 2 3h5"/></svg>地震</a>
+        <a class="chip" href="#m05power"><svg viewBox="0 0 24 24"><path d="M13 2L5 13h6l-1 9 8-11h-6z"/></svg>停電</a>
+        <a class="chip" href="#m05hurt"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M12 10v6M9 13h6M9 6V4h6v2"/></svg>有人受傷</a>
+        <a class="chip" href="#m05self"><svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="3"/><path d="M12 9v6M8 21l4-6 4 6M7 12h10"/></svg>自己受傷</a>
+        <a class="chip" href="#m05theft"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6"/></svg>竊盜與可疑人物</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap blk" aria-labelledby="h-how">
+    <div class="sec-head"><h2 id="h-how">這堂課怎麼上</h2><span class="en">How It Works</span></div>
+    <ol class="steps">
+      <li><span class="n">01</span><div><b>闖關讀圖文</b><span>依序完成七個任務，有短片的地方看一次示範。</span></div></li>
+      <li><span class="n">02</span><div><b>和指導人討論、練習</b><span>把不懂的地方問清楚，在指導人陪同下練習。</span></div></li>
+      <li><span class="n">03</span><div><b>現場走一遍</b><span>請店長帶你找到逃生路線、AED 和消防設備。</span></div></li>
+      <li><span class="n">04</span><div><b>在 A-1 簽名確認</b><span>報到一週內完成，由你和指導人或店長在 A-1《新進人員報到資料確認表》簽名。</span></div></li>
+    </ol>
+    <div class="mind">
+      <span class="lab">容易忽略</span>
+      <p>集滿印章不等於完成訓練。現場練習和走查，也是這堂課的一部分。</p>
+    </div>
+  </section>
+
+  <section class="wrap blk" aria-labelledby="h-docs">
+    <div class="sec-head"><h2 id="h-docs">相關文件</h2><span class="en">Documents</span></div>
+    <div class="docs">
+      <div class="doc"><span class="code">規章附冊 B-10</span><b>《安全衛生工作守則與職場健康計畫》</b><p>這堂課的完整制度依據。</p></div>
+      <div class="doc"><span class="code">報到文件 A-1</span><b>《新進人員報到資料確認表》</b><p>第 02 欄「一般安全衛生教育訓練」，記錄受訓日期、時數與簽名。</p></div>
+      <div class="app"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 18h4"/></svg><p>公司規章公告在 104 APP（104 HR Max）的公告區，請登入後查閱。</p></div>
+    </div>
+  </section>
+</main>
+
+<!-- ================= 任務 01（內容依 v2 初稿） ================= -->
+<main id="view-m01" class="mission" hidden>
+  <div class="m-head"><div class="wrap">
+    <div class="m-badge num">01</div>
+    <div><span class="where">任務地點：入口</span><h1>安全上場，你有公司的支持</h1><span class="meta">約 20 分鐘・含閱讀、帶教與討論</span></div>
+  </div></div>
+  <div class="wrap m-body">
+    <div class="talk">
+      <div class="say me"><svg aria-hidden="true"><use href="#av-you-q"/></svg><div class="bubble">這個工具我沒用過，但大家都在忙，可以自己試試看嗎？</div></div>
+      <div class="say mentor"><svg aria-hidden="true"><use href="#av-mentor"/></svg><div class="bubble"><small>指導人說</small><strong>不確定時先問，安全是公司和夥伴一起做的事。</strong></div></div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 1</span><h2>公司會準備什麼？</h2></div>
+      <ul class="ticks">
+        <li>提供安全的工作環境、設備與必要防護具。</li>
+        <li>安排安全教育訓練、健康檢查與健康支持。</li>
+        <li>建立工作守則，處理通報並改善危險。</li>
+      </ul>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 2</span><h2>你要一起做到什麼？</h2></div>
+      <ul class="ticks">
+        <li>參加訓練，依指導使用工具與設備。</li>
+        <li>配合健康檢查，遵守工作守則。</li>
+        <li>發現危險、設備異常或受傷，及時回報。</li>
+      </ul>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 3</span><h2>遇到危險，可以先保護自己</h2></div>
+      <p>出現立即危險時，先停止作業、退到安全處，並回報主管。</p>
+      <p>不知道怎麼做時，可以請指導人示範，不必勉強完成。</p>
+    </div>
+
+    <p class="law"><b>依照職業安全衛生法，公司和同仁都有安全責任。</b><br>延伸閱讀：規章附冊 B-10《安全衛生工作守則與職場健康計畫》，請登入 104 APP（104 HR Max）到公告區查閱。</p>
+
+    <div class="challenge">
+      <div class="hd"><span class="tag">現場挑戰</span><b>和指導人一起完成</b></div>
+      <label for="c01a"><input type="checkbox" id="c01a" class="chal"> 確認你的指導人是誰。</label>
+      <label for="c01b"><input type="checkbox" id="c01b" class="chal"> 確認店長不在時可以找誰。</label>
+    </div>
+
+    <div class="finish">
+      <div class="seal" id="seal01">任務 01<br>完成</div>
+      <button class="stamp-btn" type="button" data-stamp="01" disabled>完成現場挑戰後蓋章</button>
+      <small>下一關：02 門市裡，哪些地方要多看一眼？</small>
+    </div>
+  </div>
+</main>
+
+<!-- ================= 任務 02（內容依 v2 初稿） ================= -->
+<main id="view-m02" class="mission" hidden>
+  <div class="m-head"><div class="wrap">
+    <div class="m-badge num">02</div>
+    <div><span class="where">任務地點：賣場</span><h1>門市裡，哪些地方要多看一眼？</h1><span class="meta">約 20 分鐘・含找找看小遊戲</span></div>
+  </div></div>
+  <div class="wrap m-body">
+    <div class="talk">
+      <div class="say me"><svg aria-hidden="true"><use href="#av-you-q"/></svg><div class="bubble">紙箱先放這裡一下，應該沒關係吧？</div></div>
+      <div class="say mentor"><svg aria-hidden="true"><use href="#av-mentor"/></svg><div class="bubble"><small>指導人說</small><strong>看起來只是小障礙，也可能讓人受傷。</strong></div></div>
+    </div>
+
+    <div class="stage hunt">
+      <div class="stage-head"><span class="tag">關卡 1</span><h2>找找看：四個區域，四個危險</h2></div>
+      <div class="hunt-bar"><span>點一下畫面中有危險的地方。</span><span>已找到 <span class="num" id="hzCount">0</span> / 4</span></div>
+      <div class="scene" id="scene02">
+        <svg viewBox="0 0 360 280" role="img" aria-label="門市插畫：後場出口、賣場通道、展示層架與收銀台">
+          <rect x="0" y="0" width="360" height="200" fill="#eeebe7"/>
+          <rect x="0" y="200" width="360" height="80" fill="#e4e0da"/>
+          <line x1="0" y1="200" x2="360" y2="200" stroke="#111" stroke-width="2"/>
+          <!-- 後場出口與紙箱 -->
+          <rect x="14" y="74" width="62" height="126" fill="#fff" stroke="#111" stroke-width="2.5"/>
+          <circle cx="66" cy="140" r="3" fill="#111"/>
+          <rect x="18" y="48" width="54" height="18" rx="2" fill="#1f8a4c"/>
+          <path d="M28 57 h22 M44 52 l6 5 l-6 5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="45" y="92" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="10" font-weight="700" fill="#6c6a69">後場出口</text>
+          <rect x="20" y="152" width="46" height="48" fill="#d8cfc3" stroke="#111" stroke-width="2.5"/>
+          <rect x="26" y="114" width="38" height="38" fill="#d8cfc3" stroke="#111" stroke-width="2.5"/>
+          <rect x="54" y="170" width="34" height="30" fill="#d8cfc3" stroke="#111" stroke-width="2.5"/>
+          <path d="M20 168 h46 M26 128 h38 M54 182 h34" stroke="#b9ad9e" stroke-width="2"/>
+          <!-- 衣架 -->
+          <line x1="104" y1="70" x2="180" y2="70" stroke="#6c6a69" stroke-width="4" stroke-linecap="round"/>
+          <line x1="110" y1="70" x2="110" y2="200" stroke="#6c6a69" stroke-width="4"/>
+          <line x1="174" y1="70" x2="174" y2="200" stroke="#6c6a69" stroke-width="4"/>
+          <path d="M118 80 l8-6 l8 6 l4 54 h-24z" fill="#231f20"/>
+          <path d="M140 80 l8-6 l8 6 l3 44 h-22z" fill="#fff" stroke="#111" stroke-width="1.5"/>
+          <path d="M160 80 l6-6 l6 6 l2 60 h-16z" fill="#acaaa9"/>
+          <!-- 濕地板 -->
+          <ellipse cx="150" cy="246" rx="38" ry="10" fill="#a9cbe9" stroke="#111" stroke-width="2"/>
+          <path d="M132 232 q3 -7 6 0 q-3 4 -6 0z M166 230 q3 -7 6 0 q-3 4 -6 0z" fill="#a9cbe9" stroke="#111" stroke-width="1.5"/>
+          <!-- 層架與攀爬的人 -->
+          <rect x="200" y="56" width="74" height="144" fill="#fff" stroke="#111" stroke-width="2.5"/>
+          <path d="M200 92 h74 M200 128 h74 M200 164 h74" stroke="#111" stroke-width="2.5"/>
+          <rect x="208" y="72" width="16" height="20" fill="#acaaa9"/><rect x="230" y="78" width="16" height="14" fill="#231f20"/><rect x="250" y="110" width="16" height="18" fill="#acaaa9"/><rect x="210" y="146" width="20" height="18" fill="#231f20"/>
+          <circle cx="252" cy="34" r="12" fill="#fff" stroke="#111" stroke-width="2.5"/>
+          <path d="M242 30 q2 -14 12 -14 q10 0 10 12 q-4 -6 -11 -6 q-7 0 -11 8z" fill="#111"/>
+          <path d="M244 48 h18 l3 40 h-24z" fill="#231f20"/>
+          <path d="M262 52 l14 -24" stroke="#231f20" stroke-width="7" stroke-linecap="round"/>
+          <path d="M248 88 l-6 38 M258 88 l4 2 l-2 38" stroke="#231f20" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <!-- 收銀台與串接延長線 -->
+          <rect x="286" y="140" width="70" height="60" fill="#231f20"/>
+          <rect x="300" y="120" width="30" height="20" fill="#6c6a69"/>
+          <path d="M318 200 q-8 18 -20 20" stroke="#111" stroke-width="2" fill="none"/>
+          <rect x="272" y="216" width="38" height="12" rx="3" fill="#fff" stroke="#111" stroke-width="2"/>
+          <rect x="312" y="226" width="38" height="12" rx="3" fill="#fff" stroke="#111" stroke-width="2"/>
+          <path d="M310 222 q2 4 2 8" stroke="#111" stroke-width="2" fill="none"/>
+          <circle cx="282" cy="222" r="2.4" fill="#111"/><circle cx="292" cy="222" r="2.4" fill="#111"/><circle cx="322" cy="232" r="2.4" fill="#111"/><circle cx="332" cy="232" r="2.4" fill="#111"/>
+          <path d="M346 214 l-5 7 h6 l-5 8" stroke="#e8820c" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <button type="button" class="hz" data-hz="1" style="left:14%;top:56%;width:24%;height:36%" aria-label="可能的危險位置 1"><span class="mk">1</span></button>
+        <button type="button" class="hz" data-hz="2" style="left:41.5%;top:86%;width:26%;height:18%" aria-label="可能的危險位置 2"><span class="mk">2</span></button>
+        <button type="button" class="hz" data-hz="3" style="left:70%;top:24%;width:16%;height:42%" aria-label="可能的危險位置 3"><span class="mk">3</span></button>
+        <button type="button" class="hz" data-hz="4" style="left:86%;top:81%;width:26%;height:16%" aria-label="可能的危險位置 4"><span class="mk">4</span></button>
+      </div>
+      <button type="button" class="hint-btn" id="hintBtn">找不到？顯示提示</button>
+      <ol class="cards">
+        <li data-hz="1"><span class="num">1</span><div><span class="lock">尚未找到</span><div class="tx"><b>倉庫與後場</b>重物放低、貨品放穩；通道與逃生門前不堆貨。</div></div></li>
+        <li data-hz="2"><span class="num">2</span><div><span class="lock">尚未找到</span><div class="tx"><b>賣場通道</b>地板保持乾燥；衣架、紙箱與電線不要擋路。</div></div></li>
+        <li data-hz="3"><span class="num">3</span><div><span class="lock">尚未找到</span><div class="tx"><b>展示台與層架</b>不攀爬、不倚靠；鬆動、破損就回報，避免人員靠近。</div></div></li>
+        <li data-hz="4"><span class="num">4</span><div><span class="lock">尚未找到</span><div class="tx"><b>收銀台與插座</b>不串接延長線、不用濕手碰插頭；破損、焦痕或異常發熱就停用並報修。</div></div></li>
+      </ol>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 2</span><h2>發現危險，怎麼做？</h2></div>
+      <ol class="flow">
+        <li><span class="num">1</span>先避開危險。</li>
+        <li><span class="num">2</span>提醒他人、設置警示。</li>
+        <li><span class="num">3</span>回報店長。</li>
+        <li class="last"><span class="num">4</span>能安全處理、也學過怎麼處理的，才自己動手。</li>
+      </ol>
+    </div>
+
+    <div class="mind2">
+      <span class="lab">容易忽略</span>
+      <p>看到異常不代表要自己修。破損玻璃、電器或不穩的層架，交由適當人員處理。</p>
+    </div>
+
+    <div class="challenge">
+      <div class="hd"><span class="tag">現場挑戰</span><b>和指導人一起完成</b></div>
+      <label for="c02a"><input type="checkbox" id="c02a" class="chal"> 和指導人找出店內兩個需要留意的位置。</label>
+      <label for="c02b"><input type="checkbox" id="c02b" class="chal"> 說出每個位置的危險與改善方式。</label>
+    </div>
+
+    <div class="finish">
+      <div class="seal" id="seal02">任務 02<br>完成</div>
+      <button class="stamp-btn" type="button" data-stamp="02" disabled>找到 4 個危險並完成現場挑戰後蓋章</button>
+      <small>下一關：03 開店、營業、打烊，順手確認安全</small>
+    </div>
+  </div>
+</main>
+
+<!-- ================= 任務 03（內容依 v2 初稿） ================= -->
+<main id="view-m03" class="mission" hidden>
+  <div class="m-head"><div class="wrap">
+    <div class="m-badge num">03</div>
+    <div><span class="where">任務地點：收銀台</span><h1>開店、營業、打烊，順手確認安全</h1><span class="meta">約 30 分鐘・含一次巡檢練習</span></div>
+  </div></div>
+  <div class="wrap m-body">
+    <div class="talk">
+      <div class="say me"><svg aria-hidden="true"><use href="#av-you-q"/></svg><div class="bubble">剛剛差點被衣架絆倒，沒有受傷，也要說嗎？</div></div>
+      <div class="say mentor"><svg aria-hidden="true"><use href="#av-mentor"/></svg><div class="bubble"><small>指導人說</small><strong>差一點出事，也要說。</strong></div></div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 1–3</span><h2>跟著時段巡一次</h2></div>
+      <p>切換三個時段，每一項都點「確認」。三個時段都確認完，才算過關。</p>
+      <div class="tabs" role="tablist" aria-label="巡檢時段">
+        <button type="button" class="tab" role="tab" id="t03a" aria-controls="p03a" aria-selected="true" data-shift="a"><b>開店前</b><small>0 / 4</small></button>
+        <button type="button" class="tab" role="tab" id="t03b" aria-controls="p03b" aria-selected="false" data-shift="b"><b>營業中</b><small>0 / 4</small></button>
+        <button type="button" class="tab" role="tab" id="t03c" aria-controls="p03c" aria-selected="false" data-shift="c"><b>打烊後</b><small>0 / 4</small></button>
+      </div>
+
+      <div class="shift" role="tabpanel" id="p03a" aria-labelledby="t03a">
+        <div class="shift-art"><svg viewBox="0 0 360 120" aria-hidden="true">
+          <rect width="360" height="120" fill="#fcefdc"/>
+          <circle cx="300" cy="38" r="18" fill="#e8820c" stroke="#111" stroke-width="2.5"/>
+          <path d="M300 10 v-6 M326 22 l5 -4 M274 22 l-5 -4 M332 40 h6 M262 40 h6" stroke="#111" stroke-width="2.5" stroke-linecap="round"/>
+          <rect x="40" y="30" width="170" height="90" fill="#fff" stroke="#111" stroke-width="2.5"/>
+          <rect x="40" y="30" width="170" height="38" fill="#acaaa9" stroke="#111" stroke-width="2.5"/>
+          <path d="M40 40 h170 M40 50 h170 M40 60 h170" stroke="#111" stroke-width="1.5"/>
+          <text x="125" y="98" text-anchor="middle" font-family="Cabin, sans-serif" font-size="16" letter-spacing="5" fill="#6c6a69">GIVEN</text>
+          <rect x="0" y="116" width="360" height="4" fill="#111"/>
+        </svg></div>
+        <span class="shift-title">開店前｜先確認環境</span>
+        <ul class="cklist">
+          <li><button type="button" class="ck" aria-pressed="false"><span>通道與逃生門前沒有堆放物品。</span><span class="go">確認</span></button></li>
+          <li><button type="button" class="ck" aria-pressed="false"><span>地板乾燥，沒有雜物或絆倒風險。</span><span class="go">確認</span></button></li>
+          <li><button type="button" class="ck" aria-pressed="false"><span>燈光、電器與收銀設備沒有異常。</span><span class="go">確認</span></button></li>
+          <li><button type="button" class="ck" aria-pressed="false"><span>展示台與層架穩固，沒有明顯破損。</span><span class="go">確認</span></button></li>
+        </ul>
+      </div>
+
+      <div class="shift" role="tabpanel" id="p03b" aria-labelledby="t03b" hidden>
+        <div class="shift-art"><svg viewBox="0 0 360 120" aria-hidden="true">
+          <rect width="360" height="120" fill="#eeebe7"/>
+          <rect x="40" y="62" width="40" height="34" fill="#d8cfc3" stroke="#111" stroke-width="2.5"/>
+          <rect x="46" y="34" width="32" height="28" fill="#d8cfc3" stroke="#111" stroke-width="2.5"/>
+          <path d="M96 96 h60 v-34 M100 108 a6 6 0 1 0 0.1 0 M150 108 a6 6 0 1 0 0.1 0" stroke="#111" stroke-width="2.5" fill="none"/>
+          <path d="M96 96 h60" stroke="#111" stroke-width="2.5"/>
+          <line x1="200" y1="28" x2="320" y2="28" stroke="#6c6a69" stroke-width="4" stroke-linecap="round"/>
+          <path d="M214 36 l8-6 l8 6 l3 40 h-22z" fill="#231f20"/><path d="M244 36 l8-6 l8 6 l3 46 h-22z" fill="#fff" stroke="#111" stroke-width="1.5"/><path d="M274 36 l8-6 l8 6 l3 36 h-22z" fill="#acaaa9"/>
+          <path d="M300 104 l8 -14 l8 14z" fill="#e8820c" stroke="#111" stroke-width="2"/>
+          <rect x="0" y="116" width="360" height="4" fill="#111"/>
+        </svg></div>
+        <span class="shift-title">營業中｜變動後再看一眼</span>
+        <ul class="cklist">
+          <li><button type="button" class="ck" aria-pressed="false"><span>補貨後，收走紙箱與推車，放回指定位置。</span><span class="go">確認</span></button></li>
+          <li><button type="button" class="ck" aria-pressed="false"><span>整理試衣間與角落，收起掉落的衣架。</span><span class="go">確認</span></button></li>
+          <li><button type="button" class="ck" aria-pressed="false"><span>地面濕滑時，先提醒、設警示並安排清理。</span><span class="go">確認</span></button></li>
+          <li><button type="button" class="ck" aria-pressed="false"><span>留意顧客動線，特別是小孩與長者。</span><span class="go">確認</span></button></li>
+        </ul>
+      </div>
+
+      <div class="shift" role="tabpanel" id="p03c" aria-labelledby="t03c" hidden>
+        <div class="shift-art"><svg viewBox="0 0 360 120" aria-hidden="true">
+          <rect width="360" height="120" fill="#231f20"/>
+          <path d="M300 22 a18 18 0 1 0 18 26 a14 14 0 1 1 -18 -26z" fill="#f7f6f4" stroke="#111" stroke-width="2"/>
+          <circle cx="250" cy="20" r="2" fill="#f7f6f4"/><circle cx="330" cy="70" r="2" fill="#f7f6f4"/><circle cx="220" cy="50" r="1.6" fill="#f7f6f4"/>
+          <rect x="40" y="30" width="170" height="90" fill="#6c6a69" stroke="#f7f6f4" stroke-width="2.5"/>
+          <path d="M40 40 h170 M40 50 h170 M40 60 h170 M40 70 h170 M40 80 h170 M40 90 h170 M40 100 h170 M40 110 h170" stroke="#3a3536" stroke-width="2"/>
+          <rect x="112" y="78" width="26" height="16" rx="2" fill="#f7f6f4" stroke="#111" stroke-width="2"/>
+          <path d="M118 78 v-6 a7 7 0 0 1 14 0 v6" stroke="#f7f6f4" stroke-width="2.5" fill="none"/>
+        </svg></div>
+        <span class="shift-title">打烊後｜確認人、貨、電與門</span>
+        <ul class="cklist">
+          <li><button type="button" class="ck" aria-pressed="false"><span>確認試衣間與倉庫沒有人滯留。</span><span class="go">確認</span></button></li>
+          <li><button type="button" class="ck" aria-pressed="false"><span>貨品放穩，通道保持暢通。</span><span class="go">確認</span></button></li>
+          <li><button type="button" class="ck" aria-pressed="false"><span>依店內規範關閉不使用的電器；不得任意關閉消防、保全等必要設備。</span><span class="go">確認</span></button></li>
+          <li><button type="button" class="ck" aria-pressed="false"><span>依百貨及門市規定完成門窗與保全確認。</span><span class="go">確認</span></button></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="report">
+      <span class="lab">容易忽略</span>
+      <p>差點滑倒、貨品差點掉落，都要回報。</p>
+      <ol class="r3" aria-label="回報三件事">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg><span class="num">1</span>在哪裡</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg><span class="num">2</span>發生什麼</li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3L2 20h20z"/><path d="M12 10v4"/><circle cx="12" cy="17" r=".6"/></svg><span class="num">3</span>還有沒有危險</li>
+      </ol>
+    </div>
+
+    <div class="challenge">
+      <div class="hd"><span class="tag">現場挑戰</span><b>和指導人一起完成</b></div>
+      <label for="c03a"><input type="checkbox" id="c03a" class="chal"> 跟著指導人完成一次開店或打烊檢查。</label>
+      <label for="c03b"><input type="checkbox" id="c03b" class="chal"> 練習回報一個模擬異常（說出在哪裡、發生什麼、還有沒有危險）。</label>
+    </div>
+
+    <div class="finish">
+      <div class="seal" id="seal03">任務 03<br>完成</div>
+      <button class="stamp-btn" type="button" data-stamp="03" disabled>巡完三個時段並完成現場挑戰後蓋章</button>
+      <small>下一關：04 補貨理貨，先照顧好自己</small>
+    </div>
+  </div>
+</main>
+
+<!-- ================= 任務 04（內容依 v2 初稿） ================= -->
+<main id="view-m04" class="mission" hidden>
+  <div class="m-head"><div class="wrap">
+    <div class="m-badge num">04</div>
+    <div><span class="where">任務地點：倉庫・後場</span><h1>補貨理貨，先照顧好自己</h1><span class="meta">約 30 分鐘・含動畫短片</span></div>
+  </div></div>
+  <div class="wrap m-body">
+    <div class="talk">
+      <div class="say me"><svg aria-hidden="true"><use href="#av-you-q"/></svg><div class="bubble">再伸一點就拿到了，可以站椅子上嗎？</div></div>
+      <div class="say mentor"><svg aria-hidden="true"><use href="#av-mentor"/></svg><div class="bubble"><small>指導人說</small><strong>拿不到就換工具，搬不動就找幫手。</strong></div></div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 1</span><h2>搬貨五步驟</h2></div>
+      <div class="clip" id="clipA">
+        <div class="clip-stage">
+          <svg class="anim paused" viewBox="0 0 360 220" role="img" aria-label="動畫短片：搬貨與轉身五個步驟">
+            <rect width="360" height="190" fill="#eeebe7"/>
+            <rect y="190" width="360" height="30" fill="#e4e0da"/>
+            <line x1="0" y1="190" x2="360" y2="190" stroke="#111" stroke-width="2"/>
+
+            <g class="sc on" data-s="0">
+              <text x="24" y="48" font-family="Cabin, sans-serif" font-size="11" letter-spacing="3" fill="#6c6a69">SHORT CLIP A</text>
+              <text x="24" y="84" font-family="Noto Sans TC, sans-serif" font-size="30" font-weight="900" fill="#231f20">搬貨與轉身</text>
+              <text x="24" y="112" font-family="Noto Sans TC, sans-serif" font-size="14" fill="#6c6a69">5 個步驟・約 40 秒</text>
+              <g stroke-linecap="round" fill="none">
+                <path d="M246 150 L240 190 M254 150 L262 190" stroke="#4a4546" stroke-width="12"/>
+                <path d="M250 104 V150" stroke="#231f20" stroke-width="22"/>
+                <path d="M250 112 L236 142 M250 112 L264 142" stroke="#231f20" stroke-width="10"/>
+              </g>
+              <use href="#av-you" x="228" y="58" width="44" height="44"/>
+              <rect x="290" y="152" width="50" height="38" fill="#d8cfc3" stroke="#111" stroke-width="2.5"/><path d="M290 164 h50" stroke="#b9ad9e" stroke-width="2"/>
+            </g>
+
+            <g class="sc" data-s="1">
+              <g stroke-linecap="round" fill="none">
+                <path d="M106 150 L100 190 M114 150 L122 190" stroke="#4a4546" stroke-width="12"/>
+                <path d="M110 104 V150" stroke="#231f20" stroke-width="22"/>
+                <path d="M110 112 L96 142 M110 112 L130 100" stroke="#231f20" stroke-width="10"/>
+              </g>
+              <use href="#av-you-q" x="88" y="58" width="44" height="44"/>
+              <rect x="196" y="148" width="58" height="42" fill="#d8cfc3" stroke="#111" stroke-width="2.5"/><path d="M196 160 h58 M225 148 v12" stroke="#b9ad9e" stroke-width="2"/>
+              <g class="a-pop">
+                <circle cx="140" cy="76" r="4" fill="#fff" stroke="#111" stroke-width="2"/>
+                <circle cx="150" cy="66" r="5" fill="#fff" stroke="#111" stroke-width="2"/>
+                <ellipse cx="196" cy="46" rx="46" ry="24" fill="#fff" stroke="#111" stroke-width="2.5"/>
+                <text x="196" y="52" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="15" font-weight="900" fill="#231f20">有多重？</text>
+              </g>
+              <g class="a-late">
+                <path d="M282 126 h8 l6 52 h38" stroke="#111" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect x="296" y="150" width="38" height="24" fill="#fff" stroke="#111" stroke-width="2.5"/>
+                <circle cx="302" cy="184" r="5" fill="#111"/><circle cx="328" cy="184" r="5" fill="#111"/>
+                <text x="312" y="108" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="12" font-weight="700" fill="#b5600a">太重就用推車</text>
+                <text x="312" y="124" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="12" font-weight="700" fill="#b5600a">或找人協助</text>
+              </g>
+            </g>
+
+            <g class="sc" data-s="2">
+              <g class="a-squat">
+                <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+                  <path d="M138 150 L172 144 L168 190" stroke="#4a4546" stroke-width="12"/>
+                  <path d="M140 152 L180 152 L182 190" stroke="#231f20" stroke-width="12"/>
+                  <path d="M140 150 L150 104" stroke="#231f20" stroke-width="22"/>
+                  <path d="M150 112 L194 156" stroke="#231f20" stroke-width="10"/>
+                </g>
+                <use href="#av-you" x="132" y="58" width="44" height="44"/>
+                <path d="M126 148 L136 100" stroke="#e8820c" stroke-width="3" stroke-dasharray="5 4"/>
+              </g>
+              <rect x="196" y="148" width="58" height="42" fill="#d8cfc3" stroke="#111" stroke-width="2.5"/><path d="M196 160 h58 M225 148 v12" stroke="#b9ad9e" stroke-width="2"/>
+              <g class="a-late">
+                <text x="20" y="96" font-family="Noto Sans TC, sans-serif" font-size="12" font-weight="700" fill="#b5600a">背部自然穩定</text>
+                <path d="M96 100 L124 118" stroke="#b5600a" stroke-width="2"/>
+                <text x="226" y="132" font-family="Noto Sans TC, sans-serif" font-size="12" font-weight="700" fill="#b5600a">膝蓋彎曲</text>
+                <path d="M224 128 L184 148" stroke="#b5600a" stroke-width="2"/>
+              </g>
+            </g>
+
+            <g class="sc" data-s="3">
+              <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+                <path d="M138 150 L172 144 L168 190" stroke="#4a4546" stroke-width="12"/>
+                <path d="M140 152 L180 152 L182 190" stroke="#231f20" stroke-width="12"/>
+                <path d="M140 150 L150 104" stroke="#231f20" stroke-width="22"/>
+              </g>
+              <use href="#av-you" x="132" y="58" width="44" height="44"/>
+              <g class="a-box">
+                <rect x="180" y="132" width="56" height="44" fill="#d8cfc3" stroke="#111" stroke-width="2.5"/><path d="M180 144 h56" stroke="#b9ad9e" stroke-width="2"/>
+              </g>
+              <path d="M150 112 L184 150" stroke="#231f20" stroke-width="10" stroke-linecap="round"/>
+              <circle cx="186" cy="152" r="6" fill="#fff" stroke="#111" stroke-width="2.5"/>
+              <g class="a-late">
+                <path d="M300 120 H252 M262 112 L252 120 L262 128" stroke="#b5600a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="276" y="106" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="12" font-weight="700" fill="#b5600a">靠近身體</text>
+              </g>
+            </g>
+
+            <g class="sc" data-s="4">
+              <g class="a-rise">
+                <g stroke-linecap="round" fill="none">
+                  <path d="M116 150 L110 190 M124 150 L132 190" stroke="#4a4546" stroke-width="12"/>
+                  <path d="M120 104 V150" stroke="#231f20" stroke-width="22"/>
+                </g>
+                <use href="#av-you" x="98" y="58" width="44" height="44"/>
+                <rect x="136" y="102" width="52" height="42" fill="#d8cfc3" stroke="#111" stroke-width="2.5"/><path d="M136 114 h52" stroke="#b9ad9e" stroke-width="2"/>
+                <path d="M120 112 L142 126" stroke="#231f20" stroke-width="10" stroke-linecap="round"/>
+              </g>
+              <g class="a-blink">
+                <path d="M74 184 V148 M66 156 L74 146 L82 156" stroke="#b5600a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="20" y="136" font-family="Noto Sans TC, sans-serif" font-size="12" font-weight="700" fill="#b5600a">用腿出力</text>
+              </g>
+              <g class="a-late">
+                <rect x="232" y="40" width="104" height="28" rx="14" fill="#fbe6e3" stroke="#e53222" stroke-width="2"/>
+                <text x="284" y="59" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="900" fill="#e53222">✕ 不突然猛拉</text>
+              </g>
+            </g>
+
+            <g class="sc" data-s="5">
+              <g stroke-linecap="round" fill="none">
+                <path d="M96 150 L90 190 M104 150 L112 190" stroke="#4a4546" stroke-width="12"/>
+                <path d="M100 104 V150" stroke="#231f20" stroke-width="22"/>
+              </g>
+              <use href="#av-you" x="78" y="58" width="44" height="44"/>
+              <rect x="116" y="102" width="52" height="42" fill="#d8cfc3" stroke="#111" stroke-width="2.5"/><path d="M116 114 h52" stroke="#b9ad9e" stroke-width="2"/>
+              <path d="M100 112 L122 126" stroke="#231f20" stroke-width="10" stroke-linecap="round"/>
+              <rect x="20" y="24" width="92" height="28" rx="14" fill="#fbe6e3" stroke="#e53222" stroke-width="2"/>
+              <text x="66" y="43" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="900" fill="#e53222">✕ 不扭腰</text>
+              <rect x="206" y="20" width="134" height="160" rx="12" fill="#fff" stroke="#111" stroke-width="2.5"/>
+              <text x="273" y="42" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="11" fill="#6c6a69">從上面看雙腳</text>
+              <g class="a-feet">
+                <ellipse cx="260" cy="104" rx="8" ry="18" fill="#231f20"/>
+                <ellipse cx="286" cy="104" rx="8" ry="18" fill="#231f20"/>
+              </g>
+              <path d="M240 142 A40 40 0 0 0 306 142" stroke="#b5600a" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M298 134 L306 142 L296 148" stroke="#b5600a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <text x="273" y="170" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="12" font-weight="700" fill="#b5600a">轉動雙腳</text>
+            </g>
+
+            <g class="sc" data-s="6">
+              <rect width="360" height="220" fill="#231f20"/>
+              <text x="180" y="92" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="21" font-weight="900" fill="#fff">拿不到就換工具，</text>
+              <text x="180" y="124" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="21" font-weight="900" fill="#fff">搬不動就找幫手。</text>
+              <text x="180" y="166" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="12" fill="#cfcac4">換你試試看：用輕量紙箱練習一次。</text>
+            </g>
+          </svg>
+          <button type="button" class="bigplay" aria-label="播放短片"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4 L20 12 L7 20 Z" fill="#fff"/></svg></button>
+        </div>
+        <div class="cap" aria-live="polite"><span class="cap-no">SHORT CLIP A</span><b class="cap-t">搬貨與轉身</b><span class="d cap-d">5 個步驟，跟著做一次。</span></div>
+        <div class="clip-ctl">
+          <button type="button" class="pp" aria-label="播放"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ic" d="M7 4 L20 12 L7 20 Z" fill="#231f20"/></svg></button>
+          <div class="bar" aria-hidden="true"><i></i></div>
+          <span class="tm">0:00 / 0:42</span>
+        </div>
+        <div class="chapters" aria-label="跳到步驟">
+          <button type="button" data-go="1">1 評估</button><button type="button" data-go="2">2 蹲下</button><button type="button" data-go="3">3 抓穩</button><button type="button" data-go="4">4 起身</button><button type="button" data-go="5">5 轉向</button>
+        </div>
+      </div>
+      <p class="clip-note">動畫沒有聲音，在門市也能安靜觀看。</p>
+      <ol class="flow">
+        <li><span class="num">1</span><span><b>先評估：</b>看重量、大小與路線；太重、太大或不好抓，就用推車或找人協助。</span></li>
+        <li><span class="num">2</span><span><b>穩穩蹲下：</b>雙腳站穩，彎曲膝蓋，保持背部自然穩定。</span></li>
+        <li><span class="num">3</span><span><b>靠近抓穩：</b>讓貨品靠近身體，雙手抓穩。</span></li>
+        <li><span class="num">4</span><span><b>平穩起身：</b>利用腿部力量起身，不突然猛拉。</span></li>
+        <li><span class="num">5</span><span><b>移步轉向：</b>轉動雙腳調整方向，避免搬著重物扭腰。</span></li>
+      </ol>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 2</span><h2>工具各有安全做法</h2></div>
+      <div class="tools">
+        <div class="tool"><b class="tool-n">梯具</b>
+          <ul class="dd do"><li>先檢查、依使用標示架設。</li></ul>
+          <ul class="dd dont"><li>不踩紙箱、椅子或層架。</li><li>不站禁止站立的位置。</li><li>不探身勉強取物。</li></ul></div>
+        <div class="tool"><b class="tool-n">推車</b>
+          <ul class="dd do"><li>貨品穩固、不擋視線。</li><li>轉角放慢，停在指定位置。</li></ul>
+          <ul class="dd dont"><li>不載人。</li></ul></div>
+        <div class="tool"><b class="tool-n">美工刀</b>
+          <ul class="dd do"><li>先確認刀刃前進方向沒有手或身體。</li><li>刀刃伸出適當長度，切割方向遠離身體。</li><li>用完立即收刀並妥善放置。</li></ul></div>
+        <div class="tool"><b class="tool-n">防護具</b>
+          <ul class="dd do"><li>依作業需求正確使用公司提供的手套等防護具。</li></ul></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 3</span><h2>久站時，給身體換個姿勢</h2></div>
+      <p>穿合腳、防滑的鞋；利用合適空檔活動腳踝、伸展小腿與肩頸。</p>
+      <p>有痠痛或不舒服就及早告訴店長或人資部；持續或加重時尋求醫療協助。</p>
+    </div>
+
+    <div class="challenge">
+      <div class="hd"><span class="tag">現場挑戰</span><b>和指導人一起完成</b></div>
+      <label for="c04a"><input type="checkbox" id="c04a" class="chal"> 用輕量紙箱練習一次搬運。</label>
+      <label for="c04b"><input type="checkbox" id="c04b" class="chal"> 確認梯具與美工刀的使用方法。</label>
+    </div>
+
+    <div class="finish">
+      <div class="seal" id="seal04">任務 04<br>完成</div>
+      <button class="stamp-btn" type="button" data-stamp="04" disabled>完成現場挑戰後蓋章</button>
+      <small>下一關：05 突然出事，第一步怎麼做？</small>
+    </div>
+  </div>
+</main>
+
+<!-- ================= 任務 05（內容依 v2 初稿） ================= -->
+<main id="view-m05" class="mission" hidden>
+  <div class="m-head"><div class="wrap">
+    <div class="m-badge num">05</div>
+    <div><span class="where">任務地點：賣場中央</span><h1>突然出事，第一步怎麼做？</h1><span class="meta">約 30 分鐘・六個情境＋想一想</span></div>
+  </div></div>
+  <div class="wrap m-body">
+    <div class="talk">
+      <div class="say me"><svg aria-hidden="true"><use href="#av-you-q"/></svg><div class="bubble">突然停電，還要先把收銀工作做完嗎？</div></div>
+      <div class="say mentor"><svg aria-hidden="true"><use href="#av-mentor"/></svg><div class="bubble"><small>指導人說</small><strong>先保護人，再處理物品。</strong></div></div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 1</span><h2>六個情境，點開看怎麼做</h2></div>
+      <p>六張卡都點開看過，才算過關。</p>
+      <div class="scns">
+        <details class="scn" id="s-fire"><summary><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3c1 4 6 6 6 11a6 6 0 0 1-12 0c0-3 2-4 2-7 2 1 3 3 3 5 1-2 1-6 1-9z"/></svg></span><b>火災</b><span class="st">點開</span></summary>
+          <div class="body"><ol>
+            <li>發現火煙，立即示警並求援。</li>
+            <li>依現場情況及百貨應變程序，經安全路線撤離，<span class="no">不搭電梯、不回頭取物。</span></li>
+            <li><span class="no">不穿越濃煙；</span>無法安全離開時，找可阻隔煙火的安全空間關門求援，向 119 說明位置。</li>
+            <li>滅火不是新人一定要做的事。什麼情況可以試著滅火，請看任務 06。</li>
+          </ol></div></details>
+        <details class="scn" id="s-quake"><summary><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 12h3l2-5 3 10 3-8 2 3h5"/></svg></span><b>地震</b><span class="st">點開</span></summary>
+          <div class="body"><ol>
+            <li>搖晃時趴下、掩護、穩住，避免靠近玻璃與可能倒落的物品。</li>
+            <li><span class="no">不在搖晃時急著衝向出口。</span></li>
+            <li>搖晃停止後，確認周遭危險，依百貨指引經安全路線疏散，<span class="no">不搭電梯。</span></li>
+          </ol></div></details>
+        <details class="scn" id="s-power"><summary><span class="ic"><svg viewBox="0 0 24 24"><path d="M13 2L5 13h6l-1 9 8-11h-6z"/></svg></span><b>停電</b><span class="st">點開</span></summary>
+          <div class="body"><ol>
+            <li>先穩住腳步、安撫顧客，確認周遭是否有立即危險。</li>
+            <li>使用安全照明，<span class="no">不點火照明、不自行修復電路。</span></li>
+            <li>依百貨指示等候或疏散；如有火煙等危險，立即避開並求援。</li>
+            <li>需要疏散時，不要為了收銀或現金而耽誤離開。</li>
+          </ol></div></details>
+        <details class="scn" id="s-hurt"><summary><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><path d="M12 10v6M9 13h6M9 6V4h6v2"/></svg></span><b>顧客或同事受傷</b><span class="st">點開</span></summary>
+          <div class="body"><ol>
+            <li>先確認現場安全，請人協助。</li>
+            <li><span class="no">不任意移動傷者；</span>遇持續危險或需救命處置時，依 119 指示協助。</li>
+            <li>需要緊急救護時立即打 119，同時請夥伴通知樓管與店長。</li>
+            <li>後續記錄時間與經過，<span class="no">不拍攝或分享傷者影像供無關用途。</span></li>
+          </ol></div></details>
+        <details class="scn" id="s-self"><summary><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="6" r="3"/><path d="M12 9v6M8 21l4-6 4 6M7 12h10"/></svg></span><b>自己受傷</b><span class="st">點開</span></summary>
+          <div class="body"><ol>
+            <li>停止作業、到安全處，立即告訴店長。</li>
+            <li>需要就醫就儘速就醫，並通知人資部協助後續處理。</li>
+          </ol></div></details>
+        <details class="scn" id="s-theft"><summary><span class="ic"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l6 6"/></svg></span><b>竊盜或可疑人物</b><span class="st">點開</span></summary>
+          <div class="body"><ol>
+            <li><span class="no">不追趕、不拉扯、不自行攔阻。</span></li>
+            <li>確保安全後記下特徵、時間與離開方向，通知樓管、保全及店長。</li>
+            <li>有立即威脅時打 110。</li>
+          </ol></div></details>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 2</span><h2>通報四件事</h2></div>
+      <div class="callcard">
+        <span class="lab">照著念一次</span>
+        <p>我在<u>百貨</u><u>樓</u><u>櫃位</u>，發生<u>狀況</u>，有<u>幾</u>人受傷，我是<u>姓名</u>，電話<u>號碼</u>。</p>
+        <ol>
+          <li>在哪裡：百貨、樓層、櫃位與方便辨識的位置。</li>
+          <li>發生什麼：火煙、受傷、衝突或其他狀況。</li>
+          <li>有沒有人受傷：人數與目前觀察到的狀況。</li>
+          <li>你是誰：姓名與回撥電話。</li>
+        </ol>
+      </div>
+      <div class="mind2"><span class="lab">容易忽略</span><p>不要等主管回覆才尋求緊急救援。有其他人在場時，可以分工打電話與通知樓管。</p></div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 3</span><h2>想一想（不計分）</h2></div>
+      <div class="quiz">
+        <div class="q"><span class="qn">Q1・火災</span><b>發現火煙要撤離時，可以搭電梯嗎？</b>
+          <div class="opts"><button type="button" class="opt">可以，搭電梯比較快。</button><button type="button" class="opt" data-ok>不行，走安全路線離開。</button></div>
+          <p class="fb" hidden><b>不搭電梯、不回頭取物。</b>依現場情況及百貨應變程序，經安全路線撤離。</p></div>
+        <div class="q"><span class="qn">Q2・停電</span><b>突然停電，收銀還沒結完，你先做什麼？</b>
+          <div class="opts"><button type="button" class="opt">先把收銀結完再說。</button><button type="button" class="opt" data-ok>先穩住腳步、安撫顧客，確認有沒有立即危險。</button></div>
+          <p class="fb" hidden><b>先保護人，再處理物品。</b>需要疏散時，不要為了收銀或現金而耽誤離開。</p></div>
+        <div class="q"><span class="qn">Q3・竊盜</span><b>有人拿了商品沒結帳就往外走，你會？</b>
+          <div class="opts"><button type="button" class="opt">追上去攔住他。</button><button type="button" class="opt" data-ok>不追趕，記下特徵後通知樓管、保全和店長。</button></div>
+          <p class="fb" hidden><b>不追趕、不拉扯、不自行攔阻。</b>確保安全後記下特徵、時間與離開方向；有立即威脅時打 110。</p></div>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="hd"><span class="tag">現場挑戰</span><b>和指導人一起完成</b></div>
+      <label for="c05a"><input type="checkbox" id="c05a" class="chal"> 用模擬情境，照著小卡練習通報四件事。</label>
+      <label for="c05b"><input type="checkbox" id="c05b" class="chal"> 確認練習時不撥打緊急電話。</label>
+    </div>
+
+    <div class="finish">
+      <div class="seal" id="seal05">任務 05<br>完成</div>
+      <button class="stamp-btn" type="button" data-stamp="05" disabled>看完六個情境、答完想一想並完成現場挑戰後蓋章</button>
+      <small>下一關：06 找到設備，也找到安全的路</small>
+    </div>
+  </div>
+</main>
+
+<!-- ================= 任務 06（內容依 v2 初稿） ================= -->
+<main id="view-m06" class="mission" hidden>
+  <div class="m-head"><div class="wrap">
+    <div class="m-badge num">06</div>
+    <div><span class="where">任務地點：逃生出口</span><h1>找到設備，也找到安全的路</h1><span class="meta">約 30 分鐘・含動畫短片・需要現場走一遍</span></div>
+  </div></div>
+  <div class="wrap m-body">
+    <div class="talk">
+      <div class="say me"><svg aria-hidden="true"><use href="#av-you-q"/></svg><div class="bubble">知道店裡有 AED，你能立刻指出在哪裡嗎？</div></div>
+      <div class="say mentor"><svg aria-hidden="true"><use href="#av-floor"/></svg><div class="bubble"><small>樓管說</small><strong>平常找得到，需要時才用得上。</strong></div></div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 1</span><h2>上場前，先找到這 8 個位置</h2></div>
+      <p>每家店的位置都不一樣，這裡教你怎麼認、通常在哪裡；實際位置請店長帶你到現場走一次，親眼看到才算找到。</p>
+
+      <div class="clip" id="clipB">
+        <div class="clip-stage">
+          <svg class="anim paused" viewBox="0 0 360 220" role="img" aria-label="動畫短片：標誌認一認，逃生出口、滅火器、消防栓與警報按鈕、AED">
+            <rect width="360" height="220" fill="#eeebe7"/>
+            <g class="sc on" data-s="0">
+              <text x="24" y="58" font-family="Cabin, sans-serif" font-size="11" letter-spacing="3" fill="#6c6a69">SHORT CLIP B</text>
+              <text x="24" y="94" font-family="Noto Sans TC, sans-serif" font-size="30" font-weight="900" fill="#231f20">標誌認一認</text>
+              <text x="24" y="122" font-family="Noto Sans TC, sans-serif" font-size="14" fill="#6c6a69">4 種標誌・約 40 秒</text>
+              <rect x="234" y="40" width="54" height="30" rx="3" fill="#1f8a4c"/><rect x="296" y="40" width="40" height="40" rx="4" fill="#1f8a4c"/>
+              <path d="M316 70 s-11-7-11-15 a6 6 0 0 1 11-3 a6 6 0 0 1 11 3 c0 8-11 15-11 15z" fill="#fff"/>
+              <rect x="244" y="98" width="20" height="54" rx="6" fill="#e53222" stroke="#111" stroke-width="2.5"/>
+              <rect x="282" y="98" width="54" height="70" rx="4" fill="#e53222" stroke="#111" stroke-width="2.5"/>
+              <use href="#av-floor" x="20" y="146" width="56" height="56"/>
+            </g>
+            <g class="sc" data-s="1">
+              <g class="a-pop">
+                <rect x="90" y="40" width="180" height="80" rx="6" fill="#1f8a4c" stroke="#111" stroke-width="3"/>
+                <circle cx="126" cy="60" r="7" fill="#fff"/>
+                <path d="M124 70 l-8 16 l11 7 l-6 12 M124 74 l13 6 l7 -6 M120 84 l-12 4" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M156 82 h90 M232 68 l14 14 l-14 14" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+              <g class="a-late">
+                <text x="180" y="156" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="15" font-weight="900" fill="#231f20">綠底・白色跑步人形</text>
+                <text x="180" y="180" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="13" fill="#b5600a">找出離櫃位最近的出口</text>
+              </g>
+            </g>
+            <g class="sc" data-s="2">
+              <g class="a-pop">
+                <rect x="158" y="56" width="44" height="110" rx="14" fill="#e53222" stroke="#111" stroke-width="3"/>
+                <rect x="166" y="36" width="28" height="22" rx="4" fill="#231f20"/>
+                <path d="M194 44 h20 q12 0 12 14 v40" stroke="#231f20" stroke-width="6" fill="none" stroke-linecap="round"/>
+                <circle cx="180" cy="90" r="9" fill="#fff" stroke="#111" stroke-width="2"/>
+                <path d="M180 90 l4 -5" stroke="#111" stroke-width="2"/>
+                <rect x="166" y="112" width="28" height="30" rx="3" fill="#fff"/>
+              </g>
+              <g class="a-late">
+                <text x="40" y="96" font-family="Noto Sans TC, sans-serif" font-size="15" font-weight="900" fill="#231f20">紅色手提</text>
+                <text x="40" y="118" font-family="Noto Sans TC, sans-serif" font-size="15" font-weight="900" fill="#231f20">滅火器</text>
+                <text x="250" y="96" font-family="Noto Sans TC, sans-serif" font-size="12" fill="#b5600a">通道</text>
+                <text x="250" y="116" font-family="Noto Sans TC, sans-serif" font-size="12" fill="#b5600a">柱邊</text>
+                <text x="250" y="136" font-family="Noto Sans TC, sans-serif" font-size="12" fill="#b5600a">出口附近</text>
+              </g>
+            </g>
+            <g class="sc" data-s="3">
+              <g class="a-pop">
+                <rect x="110" y="30" width="140" height="150" rx="6" fill="#e53222" stroke="#111" stroke-width="3"/>
+                <rect x="122" y="42" width="116" height="90" rx="4" fill="#fbe6e3" stroke="#111" stroke-width="2"/>
+                <text x="180" y="96" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="22" font-weight="900" fill="#e53222">消防栓</text>
+                <circle cx="152" cy="156" r="13" fill="#fff" stroke="#111" stroke-width="2.5"/><circle cx="152" cy="156" r="6" fill="#e53222"/>
+                <rect x="190" y="146" width="44" height="20" rx="3" fill="#fff" stroke="#111" stroke-width="2"/>
+              </g>
+              <g class="a-late">
+                <text x="270" y="150" font-family="Noto Sans TC, sans-serif" font-size="12" font-weight="700" fill="#b5600a">警報按鈕</text>
+                <path d="M268 146 L168 156" stroke="#b5600a" stroke-width="2"/>
+                <rect x="20" y="186" width="200" height="26" rx="13" fill="#fbe6e3" stroke="#e53222" stroke-width="2"/>
+                <text x="120" y="204" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="13" font-weight="900" fill="#e53222">✕ 知道位置，不自行啟用</text>
+              </g>
+            </g>
+            <g class="sc" data-s="4">
+              <g class="a-pop">
+                <rect x="120" y="30" width="120" height="120" rx="10" fill="#1f8a4c" stroke="#111" stroke-width="3"/>
+                <path d="M180 132 s-40-24-40-54 a20 20 0 0 1 40-10 a20 20 0 0 1 40 10 c0 30-40 54-40 54z" fill="#fff"/>
+                <path d="M186 70 l-14 24 h14 l-8 22" stroke="#1f8a4c" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="180" y="146" text-anchor="middle" font-family="Cabin, sans-serif" font-size="12" font-weight="700" fill="#fff">AED</text>
+              </g>
+              <g class="a-late">
+                <text x="180" y="178" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="15" font-weight="900" fill="#231f20">心形加閃電</text>
+                <text x="180" y="202" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="12" fill="#b5600a">服務台・電梯廳・電扶梯旁</text>
+              </g>
+            </g>
+            <g class="sc" data-s="5">
+              <rect width="360" height="220" fill="#231f20"/>
+              <text x="180" y="100" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="21" font-weight="900" fill="#fff">平常找得到，</text>
+              <text x="180" y="132" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="21" font-weight="900" fill="#fff">需要時才用得上。</text>
+              <text x="180" y="170" text-anchor="middle" font-family="Noto Sans TC, sans-serif" font-size="12" fill="#cfcac4">實際位置，請店長帶你到現場走一次。</text>
+            </g>
+          </svg>
+          <button type="button" class="bigplay" aria-label="播放短片"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4 L20 12 L7 20 Z" fill="#fff"/></svg></button>
+        </div>
+        <div class="cap" aria-live="polite"><span class="cap-no">SHORT CLIP B</span><b class="cap-t">標誌認一認</b><span class="d cap-d">四種標誌，先認得，到現場才找得到。</span></div>
+        <div class="clip-ctl">
+          <button type="button" class="pp" aria-label="播放"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ic" d="M7 4 L20 12 L7 20 Z" fill="#231f20"/></svg></button>
+          <div class="bar" aria-hidden="true"><i></i></div>
+          <span class="tm">0:00 / 0:39</span>
+        </div>
+        <div class="chapters" aria-label="跳到標誌">
+          <button type="button" data-go="1">逃生出口</button><button type="button" data-go="2">滅火器</button><button type="button" data-go="3">消防栓</button><button type="button" data-go="4">AED</button>
+        </div>
+      </div>
+
+      <p style="font-weight:700">到現場找到一個，就按一次「確認」：</p>
+      <div class="spots">
+        <div class="spotcard"><span class="si"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="2" y="10" width="36" height="20" rx="3" fill="#1f8a4c"/><path d="M9 22 l3-6 l4 3 M22 20 h11 M29 16 l4 4 l-4 4" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>1 逃生出口</b><p>認明綠底白色跑步人形的出口標示；找出離櫃位最近的出口。</p><button type="button" class="ck" aria-pressed="false"><span>我在現場找到了</span><span class="go">確認</span></button></div>
+        <div class="spotcard"><span class="si"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 34 V20 L10 10 M20 20 L30 10 M6 12 l4-2 l0 5 M34 12 l-4-2 l0 5" stroke="#231f20" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>2 替代路線</b><p>最近的出口不能走時，第二條路線怎麼走。</p><button type="button" class="ck" aria-pressed="false"><span>我在現場找到了</span><span class="go">確認</span></button></div>
+        <div class="spotcard"><span class="si"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M10 34 V6 M10 7 h18 l-4 6 l4 6 H10" stroke="#231f20" stroke-width="2.6" fill="#e8820c" stroke-linejoin="round"/></svg></span><b>3 集合地點</b><p>疏散後到哪裡集合，依百貨規定確認。</p><button type="button" class="ck" aria-pressed="false"><span>我在現場找到了</span><span class="go">確認</span></button></div>
+        <div class="spotcard"><span class="si"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="13" y="11" width="13" height="26" rx="4" fill="#e53222" stroke="#111" stroke-width="2"/><path d="M15 8 h9 M24 9 h5 q4 0 4 5 v9" stroke="#111" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg></span><b>4 滅火器</b><p>多放在通道、柱邊或出口附近；看清楚放置位置與標示。</p><button type="button" class="ck" aria-pressed="false"><span>我在現場找到了</span><span class="go">確認</span></button></div>
+        <div class="spotcard"><span class="si"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="7" y="4" width="26" height="32" rx="3" fill="#e53222" stroke="#111" stroke-width="2"/><circle cx="20" cy="27" r="5" fill="#fff" stroke="#111" stroke-width="1.6"/><rect x="11" y="8" width="18" height="11" rx="2" fill="#fbe6e3"/></svg></span><b>5 消防栓與警報按鈕</b><p>多設在公共通道的紅色箱體；知道位置，不自行啟用。</p><button type="button" class="ck" aria-pressed="false"><span>我在現場找到了</span><span class="go">確認</span></button></div>
+        <div class="spotcard"><span class="si"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="5" y="11" width="30" height="22" rx="3" fill="#fff" stroke="#111" stroke-width="2.2"/><path d="M15 11 V7 h10 v4 M20 16 v12 M14 22 h12" stroke="#e53222" stroke-width="3" fill="none" stroke-linecap="round"/></svg></span><b>6 急救箱</b><p>確認放在店內或後場的哪個位置。</p><button type="button" class="ck" aria-pressed="false"><span>我在現場找到了</span><span class="go">確認</span></button></div>
+        <div class="spotcard"><span class="si"><svg viewBox="0 0 40 40" aria-hidden="true"><rect x="4" y="4" width="32" height="32" rx="5" fill="#1f8a4c"/><path d="M20 31 s-10-6-10-13 a5 5 0 0 1 10-3 a5 5 0 0 1 10 3 c0 7-10 13-10 13z" fill="#fff"/><path d="M21 15 l-4 6 h4 l-2 6" stroke="#1f8a4c" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>7 AED</b><p>認明心形加閃電的 AED 標誌；百貨多設在服務台、電梯廳或電扶梯旁。</p><button type="button" class="ck" aria-pressed="false"><span>我在現場找到了</span><span class="go">確認</span></button></div>
+        <div class="spotcard"><span class="si"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#av-floor"/></svg></span><b>8 樓管與保全</b><p>知道怎麼聯絡樓管與保全，以及服務台在哪裡。</p><button type="button" class="ck" aria-pressed="false"><span>我在現場找到了</span><span class="go">確認</span></button></div>
+      </div>
+      <p class="phone-tip">最後一件事：請把店長和代理人的電話存進手機。</p>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 2</span><h2>消防設備：先認識，再練習</h2></div>
+      <p>由指導人帶你認識滅火器、消防栓、警報按鈕與出口標示。</p>
+      <div class="cond">
+        <span class="hd">五個條件全部符合，才考慮初期滅火</span>
+        <ol><li>受過指導</li><li>火勢初起</li><li>器材適用</li><li>沒有濃煙</li><li>退路安全</li></ol>
+        <p class="no">不確定就撤離求援。</p>
+      </div>
+      <p style="font-weight:700">常見手提滅火器操作口訣</p>
+      <ol class="pass">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="12" r="4"/><path d="M12 12 h9"/></svg>拉<small>拉開插銷</small></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2"/></svg>瞄<small>瞄準火源底部</small></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10 h14 M7 14 h10"/><path d="M12 4 v4"/></svg>壓<small>壓下握把</small></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 16 q9 -10 18 0"/><path d="M18 12 l3 4 l-4 1"/></svg>掃<small>左右掃射</small></li>
+      </ol>
+      <p>依設備標示與現場訓練操作，瞄準火源底部左右掃射；火勢未受控制或退路受威脅就立即撤離。</p>
+      <p class="warn"><b>練習使用訓練器材，不自行啟用現場消防設備。</b></p>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 3</span><h2>急救觀念：確認、求援、依指示協助</h2></div>
+      <p>本區以成人突然倒下的情境說明；兒童、嬰兒等另有處置細節。</p>
+      <ol class="flow">
+        <li><span class="num">1</span><span>確認現場安全，再確認對方有無反應。</span></li>
+        <li><span class="num">2</span><span>無反應時大聲求援，請人打 119、拿 AED；用手機求援可開擴音，聽從指示。</span></li>
+        <li><span class="num">3</span><span>確認是否正常呼吸。無正常呼吸或無法確定時，依 119 指示開始胸外按壓；有正常呼吸則持續觀察、等待救援。</span></li>
+        <li><span class="num">4</span><span>AED 到場後開機，依語音與圖示操作；分析與電擊時所有人離開傷者。</span></li>
+        <li class="last"><span class="num">5</span><span>依 AED、119 指示繼續協助，直到救護人員接手。</span></li>
+      </ol>
+      <p class="warn"><b>這是辨識與求援的入門內容。</b>胸外按壓與 AED 操作應搭配合格指導及訓練器材練習。</p>
+    </div>
+
+    <div class="challenge">
+      <div class="hd"><span class="tag">現場挑戰</span><b>和指導人一起完成</b></div>
+      <label for="c06a"><input type="checkbox" id="c06a" class="chal"> 走完逃生路線，指出 AED 與急救箱。</label>
+      <label for="c06b"><input type="checkbox" id="c06b" class="chal"> 向指導人說明集合地點及求助方式。</label>
+    </div>
+
+    <div class="finish">
+      <div class="seal" id="seal06">任務 06<br>完成</div>
+      <button class="stamp-btn" type="button" data-stamp="06" disabled>找到 8 個位置並完成現場挑戰後蓋章</button>
+      <small>下一關：07 遇到不當對待、身體不舒服，別硬撐</small>
+    </div>
+  </div>
+</main>
+
+<!-- ================= 任務 07（內容依 v2 初稿） ================= -->
+<main id="view-m07" class="mission" hidden>
+  <div class="m-head"><div class="wrap">
+    <div class="m-badge num">07</div>
+    <div><span class="where">任務地點：休息區</span><h1>遇到不當對待、身體不舒服，別硬撐</h1><span class="meta">約 20 分鐘</span></div>
+  </div></div>
+  <div class="wrap m-body">
+    <div class="talk">
+      <div class="say me"><svg aria-hidden="true"><use href="#av-you-q"/></svg><div class="bubble">顧客越靠越近、持續辱罵，我一定要留下來聽完嗎？</div></div>
+      <div class="say mentor"><svg aria-hidden="true"><use href="#av-manager"/></svg><div class="bubble"><small>店長說</small><strong>服務顧客，也要保護自己。</strong></div></div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 1</span><h2>對方情緒升高時</h2></div>
+      <ol class="flow">
+        <li><span class="num">1</span><span><b>保持距離：</b>站在有退路的位置，避免被堵住。</span></li>
+        <li><span class="num">2</span><span><b>找夥伴：</b>請同事、店長或樓管協助，不獨自承受。</span></li>
+        <li><span class="num">3</span><span><b>遠離威脅：</b>有危險就離開並求援，需要時打 110。</span></li>
+        <li class="last"><span class="num">4</span><span><b>安全後回報：</b>記下時間、地點與經過，尋求後續支持。</span></li>
+      </ol>
+      <div class="say-try"><svg aria-hidden="true"><use href="#av-you"/></svg><div class="bubble"><small>練習說說看</small><strong>「我請主管一起協助您。」</strong></div></div>
+      <p class="warn"><b>面對辱罵、恐嚇或肢體威脅，不需要為了完成服務而留在危險現場。</b></p>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 2</span><h2>不當對待，可以尋求協助</h2></div>
+      <p>不論對方是顧客、同事或主管，遇到暴力、騷擾、霸凌等情況，都可以透過公司管道反映。若不適合向直屬主管反映，可直接聯絡人資或申訴窗口。</p>
+      <div class="contact">
+        <div class="row"><div><small>申訴專線</small><span class="val">04-2322-9163 分機 2022</span></div><button type="button" class="copy" data-copy="04-2322-9163 分機 2022">複製</button></div>
+        <div class="row"><div><small>申訴信箱</small><span class="val">report@taiwangiven.com.tw</span></div><button type="button" class="copy" data-copy="report@taiwangiven.com.tw">複製</button></div>
+        <p>公司依制度保密處理，並提供申訴保護；實際資訊以公司正式公告為準。</p>
+      </div>
+      <p class="soft">延伸閱讀：規章附冊 B-2《員工商業行為準則與獎懲管理辦法》，請登入 104 APP（104 HR Max）到公告區查閱。</p>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head"><span class="tag">關卡 3</span><h2>身體的訊號，也值得被看見</h2></div>
+      <div class="sig">
+        <div class="sigcard"><b>久站、搬貨痠痛</b><p>及早反映，討論工具、姿勢與工作安排。</p></div>
+        <div class="sigcard"><b>懷孕、產後或持續哺乳</b><p>向人資提出健康保護需求，由相關人員評估。</p></div>
+        <div class="sigcard"><b>疲勞與壓力</b><p>持續影響身心或工作時，向主管、人資或健康服務人員尋求支持。</p></div>
+        <div class="sigcard"><b>悶熱環境</b><p>適時補水與休息；頭暈、胸悶等不適時先停止作業，告知夥伴並視情況尋求醫療或緊急救援。</p></div>
+      </div>
+      <div class="plans">
+        <b>公司有四項健康保護計畫</b>
+        <ul><li>人因性危害預防</li><li>母性健康保護</li><li>異常工作負荷促發疾病預防</li><li>執行職務遭受不法侵害預防</li></ul>
+        <span class="soft">完整內容：規章附冊 B-10《安全衛生工作守則與職場健康計畫》，請登入 104 APP（104 HR Max）到公告區查閱。</span>
+      </div>
+    </div>
+
+    <div class="challenge">
+      <div class="hd"><span class="tag">現場挑戰</span><b>和指導人一起完成</b></div>
+      <label for="c07a"><input type="checkbox" id="c07a" class="chal"> 確認申訴管道（電話與信箱）。</label>
+      <label for="c07b"><input type="checkbox" id="c07b" class="chal"> 和指導人討論：店長不在或不適合找店長時，還能找誰？</label>
+      <p class="soft">不需要分享個人病史、懷孕狀況或受害經驗。</p>
+    </div>
+
+    <div class="finish">
+      <div class="seal" id="seal07">任務 07<br>完成</div>
+      <button class="stamp-btn" type="button" data-stamp="07" disabled>完成現場挑戰後蓋章</button>
+      <small>這是最後一關。</small>
+    </div>
+  </div>
+</main>
+
+<!-- ================= 結業畫面 ================= -->
+<main id="view-done" hidden>
+  <div class="done-hero"><div class="wrap">
+    <span class="en">All 7 Missions Complete</span>
+    <h1>安全上場，從多看一眼開始。</h1>
+    <p>你不必獨自處理所有狀況。</p>
+    <p>看見危險就說，不確定就問；需要幫忙時，找得到夥伴與支持。</p>
+    <div class="done-stamps"><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span></div>
+  </div></div>
+  <div class="wrap m-body">
+    <div class="challenge">
+      <div class="hd"><span class="tag">最後確認</span><b>完成前，和指導人確認</b></div>
+      <ul class="ticks">
+        <li>七個單元已讀完，疑問已討論。</li>
+        <li>已練習必要的工具與安全做法。</li>
+        <li>已走過逃生路線，確認集合地點與設備位置。</li>
+        <li>知道發生異常時的求援與回報方式。</li>
+      </ul>
+    </div>
+    <div class="callcard">
+      <span class="lab">最後一步</span>
+      <p style="font-size:16px;line-height:1.8">實際訓練完成後，依公司流程在 A-1《新進人員報到資料確認表》填寫日期與實際時數，由新人與指導人簽名，交人資部留存。</p>
+    </div>
+    <div class="mind2"><span class="lab">容易忽略</span><p>單純閱讀網站、勾選清單或看完影片，不代表已完成全部訓練。</p></div>
+    <a class="stamp-btn" href="#home" style="text-align:center;display:block">回到首頁</a>
+  </div>
+</main>
+
+<!-- ================= 任務頁（內容確認中，備用） ================= -->
+<main id="view-draft" class="mission" hidden>
+  <div class="m-head"><div class="wrap">
+    <div class="m-badge num" id="dNo">02</div>
+    <div><span class="where" id="dWhere">任務地點</span><h1 id="dTitle">任務名稱</h1><span class="meta" id="dMeta">約 20 分鐘</span></div>
+  </div></div>
+  <div class="wrap m-body">
+    <div class="talk">
+      <div class="say mentor"><svg aria-hidden="true"><use href="#av-mentor"/></svg><div class="bubble"><small>指導人說</small><strong id="dKey">一句重點</strong></div></div>
+    </div>
+    <div class="draft">
+      <b>這一關的內容正在確認中</b>
+      <p>內容定稿後會放在這裡，網址不變。</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="logo">GIVEN</span>
+    <div class="ver"><span>門市安全實務課</span><span>v0.9 確認稿</span><span>最後更新 2026-10-22</span></div>
+    <p>本網站提供全台門市共用的原則與步驟，各店實際位置與聯絡方式，以店長現場說明為準。</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var MISSIONS = {
+    "01":{where:"入口",title:"安全上場，你有公司的支持",min:20,key:"不確定時先問，安全是公司和夥伴一起做的事。",tag:[180,410]},
+    "02":{where:"賣場",title:"門市裡，哪些地方要多看一眼？",min:20,key:"看起來只是小障礙，也可能讓人受傷。",tag:[120,250]},
+    "03":{where:"收銀台",title:"開店、營業、打烊，順手確認安全",min:30,key:"差一點出事，也要說。",tag:[290,290]},
+    "04":{where:"倉庫・後場",title:"補貨理貨，先照顧好自己",min:30,key:"拿不到就換工具，搬不動就找幫手。",tag:[80,72]},
+    "05":{where:"賣場中央",title:"突然出事，第一步怎麼做？",min:30,key:"先保護人，再處理物品。",tag:[200,196]},
+    "06":{where:"逃生出口",title:"找到設備，也找到安全的路",min:30,key:"平常找得到，需要時才用得上。",tag:[44,360]},
+    "07":{where:"休息區",title:"遇到不當對待、身體不舒服，別硬撐",min:20,key:"服務顧客，也要保護自己。",tag:[280,72]}
+  };
+  var READY = {"01":true,"02":true,"03":true,"04":true,"05":true,"06":true,"07":true};
+  var IDS = ["01","02","03","04","05","06","07"];
+  var KEY = "gv-safety-stamps";
+
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || []; }catch(e){ return []; } }
+  function save(a){ try{ localStorage.setItem(KEY, JSON.stringify(a)); }catch(e){} }
+  var done = load();
+
+  function paint(){
+    var next = null;
+    for (var i=0;i<IDS.length;i++){ if (done.indexOf(IDS[i])<0){ next = IDS[i]; break; } }
+    document.getElementById("doneCount").textContent = done.length;
+    document.getElementById("doneLink").hidden = done.length < IDS.length;
+    function state(el, id){
+      el.classList.toggle("done", done.indexOf(id)>=0);
+      el.classList.toggle("next", id===next);
+    }
+    document.querySelectorAll("#stamps li, .pin, #missionList li").forEach(function(el){ state(el, el.getAttribute("data-id")); });
+    document.querySelectorAll("#missionList li").forEach(function(li){
+      var id = li.getAttribute("data-id"), st = li.querySelector(".st");
+      st.textContent = done.indexOf(id)>=0 ? "已完成" : (id===next ? "開始 →" : MISSIONS[id].min + " 分");
+    });
+    var tag = document.getElementById("nextTag");
+    if (!tag){} else if (next){
+      var p = MISSIONS[next].tag, x = Math.min(Math.max(p[0]-46, 8), 258), y = p[1]+24;
+      if (y > 420) y = p[1]-54;
+      tag.setAttribute("transform","translate("+x+" "+y+")"); tag.style.display="";
+    } else if (tag) { tag.style.display="none"; }
+    IDS.forEach(function(id){
+      var seal = document.getElementById("seal"+id);
+      if (seal) seal.classList.toggle("on", done.indexOf(id)>=0);
+    });
+  }
+
+  function show(hash){
+    var h = (hash||"").replace("#","");
+    var m = /^m(0[1-7])([a-z]*)$/.exec(h);
+    var views = document.querySelectorAll("main");
+    views.forEach(function(v){ v.hidden = true; });
+    var back = document.getElementById("backBtn"), sub = document.getElementById("topSub");
+    if (m){
+      var id = m[1];
+      if (READY[id]){ document.getElementById("view-m"+id).hidden = false; }
+      else {
+        var d = MISSIONS[id];
+        document.getElementById("dNo").textContent = id;
+        document.getElementById("dWhere").textContent = "任務地點：" + d.where;
+        document.getElementById("dTitle").textContent = d.title;
+        document.getElementById("dMeta").textContent = "約 " + d.min + " 分鐘";
+        document.getElementById("dKey").textContent = d.key;
+        document.getElementById("view-draft").hidden = false;
+      }
+      back.hidden = false; sub.hidden = true;
+      var target = m[2] ? document.getElementById("s-" + m[2]) : null;
+      if (target && READY[id]){ target.open = true; setTimeout(function(){ target.scrollIntoView(); }, 0); }
+      else window.scrollTo(0,0);
+    } else if (h === "done"){
+      document.getElementById("view-done").hidden = false;
+      back.hidden = false; sub.hidden = true;
+      window.scrollTo(0,0);
+    } else {
+      document.getElementById("view-home").hidden = false;
+      back.hidden = true; sub.hidden = false;
+      if (h && h!=="home"){ var t = document.getElementById(h); if (t) setTimeout(function(){ t.scrollIntoView(); }, 0); }
+      else window.scrollTo(0,0);
+    }
+  }
+
+  document.querySelectorAll(".mission").forEach(function(v){
+    var boxes = v.querySelectorAll(".chal"), btn = v.querySelector(".stamp-btn");
+    if (!btn) return;
+    var hz = v.querySelectorAll(".hz"), cks = v.querySelectorAll(".ck"), tabs = v.querySelectorAll(".tab"), waitLabel = btn.textContent;
+    var scns = v.querySelectorAll(".scn"), qs = v.querySelectorAll(".q");
+    scns.forEach(function(s){
+      s.addEventListener("toggle", function(){
+        if (s.open){ s.classList.add("seen"); s.querySelector(".st").textContent = "已看過"; check(); }
+      });
+    });
+    qs.forEach(function(q){
+      q.querySelectorAll(".opt").forEach(function(o){
+        o.addEventListener("click", function(){
+          q.querySelectorAll(".opt").forEach(function(x){
+            x.classList.toggle("right", x.hasAttribute("data-ok"));
+            x.classList.toggle("wrong", x === o && !x.hasAttribute("data-ok"));
+          });
+          q.querySelector(".fb").hidden = false;
+          q.classList.add("done"); check();
+        });
+      });
+    });
+    function paintTabs(){
+      tabs.forEach(function(t){
+        var panel = document.getElementById(t.getAttribute("aria-controls"));
+        var items = panel.querySelectorAll(".ck"), n = panel.querySelectorAll(".ck.ok").length;
+        t.querySelector("small").textContent = n === items.length ? "✓ 完成" : n + " / " + items.length;
+        t.classList.toggle("ok", n === items.length);
+      });
+    }
+    tabs.forEach(function(t){
+      t.addEventListener("click", function(){
+        tabs.forEach(function(o){
+          var on = o === t;
+          o.setAttribute("aria-selected", on ? "true" : "false");
+          document.getElementById(o.getAttribute("aria-controls")).hidden = !on;
+        });
+      });
+    });
+    cks.forEach(function(c){
+      c.addEventListener("click", function(){
+        var on = !c.classList.contains("ok");
+        c.classList.toggle("ok", on);
+        c.setAttribute("aria-pressed", on ? "true" : "false");
+        c.querySelector(".go").textContent = on ? "✓ 已確認" : "確認";
+        paintTabs(); check();
+      });
+    });
+    function check(){
+      var all = Array.prototype.every.call(boxes, function(b){ return b.checked; }) &&
+                Array.prototype.every.call(hz, function(h){ return h.classList.contains("found"); }) &&
+                Array.prototype.every.call(cks, function(c){ return c.classList.contains("ok"); }) &&
+                Array.prototype.every.call(scns, function(s){ return s.classList.contains("seen"); }) &&
+                Array.prototype.every.call(qs, function(q){ return q.classList.contains("done"); });
+      var id = btn.getAttribute("data-stamp"), has = done.indexOf(id)>=0;
+      btn.disabled = !all && !has;
+      btn.textContent = has ? "已蓋章，回首頁" : (all ? "完成任務，蓋上印章" : waitLabel);
+    }
+    boxes.forEach(function(b){ b.addEventListener("change", check); });
+    hz.forEach(function(h){
+      h.addEventListener("click", function(){
+        var n = h.getAttribute("data-hz");
+        h.classList.add("found");
+        h.setAttribute("aria-label", "已找到危險 " + n);
+        var card = v.querySelector('.cards li[data-hz="'+n+'"]');
+        if (card) card.classList.add("found");
+        var c = v.querySelectorAll(".hz.found").length, cnt = v.querySelector("#hzCount");
+        if (cnt) cnt.textContent = c;
+        check();
+      });
+    });
+    var hint = v.querySelector(".hint-btn");
+    if (hint) hint.addEventListener("click", function(){ v.querySelector(".scene").classList.add("hint"); });
+    v.addEventListener("reset-hunt", function(){
+      hz.forEach(function(h){ h.classList.remove("found"); h.setAttribute("aria-label","可能的危險位置 "+h.getAttribute("data-hz")); });
+      v.querySelectorAll(".cards li").forEach(function(c){ c.classList.remove("found"); });
+      var cnt = v.querySelector("#hzCount"); if (cnt) cnt.textContent = 0;
+      var sc = v.querySelector(".scene"); if (sc) sc.classList.remove("hint");
+      cks.forEach(function(c){ c.classList.remove("ok"); c.setAttribute("aria-pressed","false"); c.querySelector(".go").textContent = "確認"; });
+      if (tabs.length) paintTabs();
+      scns.forEach(function(s){ s.open = false; s.classList.remove("seen"); s.querySelector(".st").textContent = "點開"; });
+      qs.forEach(function(q){ q.classList.remove("done"); q.querySelector(".fb").hidden = true; q.querySelectorAll(".opt").forEach(function(x){ x.classList.remove("right","wrong"); }); });
+      check();
+    });
+    btn.addEventListener("click", function(){
+      var id = btn.getAttribute("data-stamp");
+      if (done.indexOf(id)<0){ done.push(id); save(done); paint(); check(); setTimeout(function(){ location.hash = done.length >= IDS.length ? "done" : "home"; }, 700); }
+      else { location.hash = "home"; }
+    });
+    check();
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", function(){
+    done = []; save(done); paint();
+    document.querySelectorAll(".chal").forEach(function(b){ b.checked = false; b.dispatchEvent(new Event("change")); });
+    document.querySelectorAll(".mission").forEach(function(v){ v.dispatchEvent(new Event("reset-hunt")); });
+  });
+
+  document.querySelectorAll(".copy").forEach(function(b){
+    b.addEventListener("click", function(){
+      var txt = b.getAttribute("data-copy");
+      function ok(){ b.textContent = "已複製"; b.classList.add("done"); setTimeout(function(){ b.textContent = "複製"; b.classList.remove("done"); }, 1800); }
+      function fallback(){
+        var el = b.parentNode.querySelector(".val"), r = document.createRange();
+        r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        b.textContent = "已選取，請長按複製";
+      }
+      try { navigator.clipboard.writeText(txt).then(ok, fallback); } catch(e){ fallback(); }
+    });
+  });
+
+  /* ---------- 動畫短片播放器 ---------- */
+  var players = [];
+  function makePlayer(root, scenes){
+    var svg = root.querySelector("svg.anim"), groups = root.querySelectorAll(".sc"),
+        big = root.querySelector(".bigplay"), pp = root.querySelector(".pp"), ic = pp.querySelector(".ic"),
+        bar = root.querySelector(".bar i"), tm = root.querySelector(".tm"),
+        capNo = root.querySelector(".cap-no"), capT = root.querySelector(".cap-t"), capD = root.querySelector(".cap-d"),
+        chips = root.querySelectorAll(".chapters button");
+    var starts = [], total = 0;
+    scenes.forEach(function(s){ starts.push(total); total += s.dur; });
+    var t = 0, playing = false, last = 0, cur = -1, raf = 0;
+    function fmt(s){ s = Math.floor(s); return Math.floor(s/60) + ":" + ("0" + s%60).slice(-2); }
+    function setScene(i){
+      if (i === cur) return;
+      cur = i;
+      groups.forEach(function(g, k){
+        g.classList.toggle("on", k === i);
+        g.classList.remove("run");
+        if (k === i){ void g.getBoundingClientRect(); g.classList.add("run"); }
+      });
+      capNo.textContent = scenes[i].no; capT.textContent = scenes[i].t; capD.textContent = scenes[i].d;
+      chips.forEach(function(c){ c.classList.toggle("on", +c.getAttribute("data-go") === i); });
+    }
+    function render(){
+      var i = 0; while (i < starts.length - 1 && t >= starts[i+1]) i++;
+      setScene(i);
+      bar.style.width = (t / total * 100) + "%";
+      tm.textContent = fmt(t) + " / " + fmt(total);
+    }
+    function tick(now){
+      if (!playing) return;
+      t += (now - last) / 1000; last = now;
+      if (t >= total){ t = total; render(); pause(); return; }
+      render(); raf = requestAnimationFrame(tick);
+    }
+    function play(){
+      if (t >= total){ t = 0; cur = -1; }
+      playing = true; big.hidden = true; svg.classList.remove("paused");
+      ic.setAttribute("d", "M6 4 h4 v16 h-4z M14 4 h4 v16 h-4z"); pp.setAttribute("aria-label", "暫停");
+      last = performance.now(); render(); raf = requestAnimationFrame(tick);
+    }
+    function pause(){
+      playing = false; cancelAnimationFrame(raf); svg.classList.add("paused");
+      ic.setAttribute("d", "M7 4 L20 12 L7 20 Z"); pp.setAttribute("aria-label", "播放");
+      if (t >= total) big.hidden = false;
+    }
+    big.addEventListener("click", play);
+    pp.addEventListener("click", function(){ playing ? pause() : play(); });
+    chips.forEach(function(c){
+      c.addEventListener("click", function(){ t = starts[+c.getAttribute("data-go")]; cur = -1; render(); if (!playing) play(); });
+    });
+    render();
+    return { pause: function(){ if (playing) pause(); } };
+  }
+  var clipA = document.getElementById("clipA");
+  if (clipA) players.push(makePlayer(clipA, [
+    {dur:3, no:"SHORT CLIP A", t:"搬貨與轉身", d:"5 個步驟，跟著做一次。"},
+    {dur:7, no:"STEP 1", t:"先評估", d:"看重量、大小與路線；太重、太大或不好抓，就用推車或找人協助。"},
+    {dur:7, no:"STEP 2", t:"穩穩蹲下", d:"雙腳站穩，彎曲膝蓋，保持背部自然穩定。"},
+    {dur:7, no:"STEP 3", t:"靠近抓穩", d:"讓貨品靠近身體，雙手抓穩。"},
+    {dur:7, no:"STEP 4", t:"平穩起身", d:"利用腿部力量起身，不突然猛拉。"},
+    {dur:7, no:"STEP 5", t:"移步轉向", d:"轉動雙腳調整方向，避免搬著重物扭腰。"},
+    {dur:4, no:"END", t:"拿不到就換工具，搬不動就找幫手。", d:"換你試試看：在指導人陪同下，用輕量紙箱練習一次。"}
+  ]));
+
+  var clipB = document.getElementById("clipB");
+  if (clipB) players.push(makePlayer(clipB, [
+    {dur:3, no:"SHORT CLIP B", t:"標誌認一認", d:"四種標誌，先認得，到現場才找得到。"},
+    {dur:8, no:"SIGN 1", t:"逃生出口", d:"認明綠底白色跑步人形的出口標示；找出離櫃位最近的出口。"},
+    {dur:8, no:"SIGN 2", t:"滅火器", d:"多放在通道、柱邊或出口附近；看清楚放置位置與標示。"},
+    {dur:8, no:"SIGN 3", t:"消防栓與警報按鈕", d:"多設在公共通道的紅色箱體；知道位置，不自行啟用。"},
+    {dur:8, no:"SIGN 4", t:"AED", d:"認明心形加閃電的 AED 標誌；百貨多設在服務台、電梯廳或電扶梯旁。"},
+    {dur:4, no:"END", t:"平常找得到，需要時才用得上。", d:"實際位置，請店長帶你到現場走一次。"}
+  ]));
+
+  window.addEventListener("hashchange", function(){ players.forEach(function(p){ p.pause(); }); show(location.hash); });
+  paint();
+  show(location.hash);
+})();
+</script>
+
+</body>
+</html>
